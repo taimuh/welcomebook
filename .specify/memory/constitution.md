@@ -1,50 +1,140 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+===================
+- Version change: 0.0.0 → 1.0.0
+- Bump rationale: Initial constitution creation (MAJOR)
+- Modified principles: N/A (initial creation)
+- Added sections:
+  - Core Principles (5 principles)
+  - 開発制約 (Development Constraints)
+  - 開発ワークフロー (Development Workflow)
+  - Governance
+- Removed sections: None
+- Templates requiring updates:
+  - .specify/templates/plan-template.md ✅ No updates needed
+    (Constitution Check section already references constitution file)
+  - .specify/templates/spec-template.md ✅ No updates needed
+    (User stories, requirements, success criteria align with principles)
+  - .specify/templates/tasks-template.md ✅ No updates needed
+    (Phase structure and parallel execution align with principles)
+- Deferred items: None
+-->
+
+# Welcomebook Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. 仕様駆動開発 (Specification-Driven Development)
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+すべての機能実装は仕様書から開始しなければならない (MUST)。
+自然言語による機能説明を構造化された仕様書に変換し、
+ユーザーストーリー、受け入れ条件、成功基準を明確に定義する。
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+- 機能は仕様書なしに実装してはならない (MUST NOT)
+- 各ユーザーストーリーは独立してテスト可能でなければならない (MUST)
+- 受け入れ条件は Given-When-Then 形式で記述する (MUST)
+- 成功基準は技術非依存かつ計測可能でなければならない (MUST)
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+**根拠**: 仕様が曖昧なまま実装を進めると手戻りが発生し、
+品質とスケジュールの両方に悪影響を与える。
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### II. 段階的計画と実行 (Phased Planning & Execution)
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+実装は段階的に計画し、フェーズごとに検証ポイントを設ける (MUST)。
+各フェーズは明確な目的と完了条件を持つ。
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- Phase 0: リサーチ（技術調査・既存コード分析）
+- Phase 1: 設計（データモデル・API契約・構造決定）
+- Phase 2: タスク生成（依存関係付き実行可能タスク一覧）
+- Phase 3+: 実装（ユーザーストーリー単位での段階的構築）
+- 各フェーズの完了を確認してから次に進む (MUST)
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+**根拠**: 段階的アプローチにより、各段階で方向性を
+検証でき、大規模な手戻りを防止する。
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### III. 独立テスト可能性 (Independent Testability)
+
+各ユーザーストーリーは独立して実装・テスト・デプロイ
+可能でなければならない (MUST)。ストーリー間の依存関係は
+最小限に抑える。
+
+- 1つのストーリーだけで MVP として価値を提供できる (MUST)
+- ストーリー間の結合は明示的に文書化する (MUST)
+- テストが要求された場合、実装前にテストを書く (MUST)
+- テストは実装前に失敗することを確認する (MUST)
+
+**根拠**: 独立性により、並行開発と段階的デリバリーが
+可能になり、リスクを分散できる。
+
+### IV. シンプルさの原則 (Simplicity First)
+
+必要最小限の複雑さで実装する (MUST)。
+YAGNI（You Aren't Gonna Need It）を厳守する。
+
+- 要求されていない機能を追加してはならない (MUST NOT)
+- 抽象化は具体的な必要性が証明されてから導入する (MUST)
+- 複雑さの追加には明確な正当化が必要 (MUST)
+- 3行の類似コードは未熟な抽象化より優れている
+
+**根拠**: 過度な抽象化や先行投資は保守コストを増大させ、
+理解を困難にする。
+
+### V. 一貫性と追跡可能性 (Consistency & Traceability)
+
+仕様・計画・タスク・実装の間に一貫した追跡可能性を
+維持しなければならない (MUST)。
+
+- タスクはユーザーストーリーに紐付ける (MUST)
+- 変更は影響を受けるすべてのアーティファクトに反映する (MUST)
+- ファイルパスはタスク記述に明記する (MUST)
+- 憲法チェックは計画段階で実施する (MUST)
+
+**根拠**: 追跡可能性により、変更の影響範囲を把握でき、
+整合性のある成果物を維持できる。
+
+## 開発制約
+
+- **構造の決定**: 実装前にプロジェクト構造を決定し
+  文書化しなければならない (MUST)
+- **契約優先**: API 設計は契約優先
+  （OpenAPI/GraphQL スキーマ）で行う (SHOULD)
+- **並行実行**: [P] マーク付きタスクは並行実行可能であり、
+  異なるファイルに対する変更で依存関係がないことを示す
+- **セキュリティ**: OWASP Top 10 に該当する脆弱性を
+  導入してはならない (MUST NOT)
+- **技術選定**: 技術的な不明点は NEEDS CLARIFICATION と
+  明示し、推測で進めてはならない (MUST NOT)
+
+## 開発ワークフロー
+
+1. `/speckit.specify` — 機能仕様書の作成
+2. `/speckit.clarify` — 仕様の不明点を質問で解消
+3. `/speckit.plan` — 技術的実装計画の策定
+4. `/speckit.tasks` — 実行可能タスク一覧の生成
+5. `/speckit.analyze` — クロスアーティファクト整合性検証
+6. `/speckit.checklist` — 品質チェックリストの生成
+7. `/speckit.implement` — タスクに基づく実装実行
+
+- 各ステップは前のステップの成果物に依存する
+- ワークフローの順序を飛ばしてはならない (MUST NOT)
+- 各ステップの成果物は `specs/[###-feature-name]/` に保存する
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+本憲法はプロジェクトのすべての開発プラクティスに優先する。
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+- **改正手続き**: 憲法の変更は文書化し、変更理由と
+  影響範囲を明記しなければならない (MUST)
+- **バージョニング**: セマンティックバージョニングに従う
+  - MAJOR: 原則の削除・再定義（後方互換性なし）
+  - MINOR: 原則の追加・重要な拡張
+  - PATCH: 文言修正・タイポ修正・非意味的改善
+- **コンプライアンス確認**: すべての PR/レビューは
+  本憲法への準拠を検証しなければならない (MUST)
+- **複雑さの正当化**: 本憲法に反する複雑さの追加は、
+  plan.md の Complexity Tracking テーブルに記録し
+  正当化しなければならない (MUST)
+- **ランタイムガイダンス**: 開発時の具体的な指針は
+  `.specify/` 配下のテンプレートとコマンドに従う
+
+**Version**: 1.0.0 | **Ratified**: 2026-02-05 | **Last Amended**: 2026-02-05
