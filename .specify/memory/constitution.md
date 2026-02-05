@@ -1,25 +1,3 @@
-<!--
-Sync Impact Report
-===================
-- Version change: 0.0.0 → 1.0.0
-- Bump rationale: Initial constitution creation (MAJOR)
-- Modified principles: N/A (initial creation)
-- Added sections:
-  - Core Principles (5 principles)
-  - 開発制約 (Development Constraints)
-  - 開発ワークフロー (Development Workflow)
-  - Governance
-- Removed sections: None
-- Templates requiring updates:
-  - .specify/templates/plan-template.md ✅ No updates needed
-    (Constitution Check section already references constitution file)
-  - .specify/templates/spec-template.md ✅ No updates needed
-    (User stories, requirements, success criteria align with principles)
-  - .specify/templates/tasks-template.md ✅ No updates needed
-    (Phase structure and parallel execution align with principles)
-- Deferred items: None
--->
-
 # Welcomebook Constitution
 
 ## Core Principles
@@ -105,6 +83,28 @@ YAGNI（You Aren't Gonna Need It）を厳守する。
 - **技術選定**: 技術的な不明点は NEEDS CLARIFICATION と
   明示し、推測で進めてはならない (MUST NOT)
 
+## 技術スタック
+
+| レイヤー | 技術 | バージョン |
+|---------|------|-----------|
+| フロントエンド | Next.js (App Router) | 14+ |
+| 言語 | TypeScript | - |
+| スタイリング | Tailwind CSS | - |
+| CMS | Strapi | 4.x |
+| DB | PostgreSQL | 14+ |
+| ホスティング（FE） | Vercel | 無料枠 |
+| ホスティング（BE） | Railway | 無料枠 |
+
+- 上記スタックから逸脱してはならない (MUST NOT)
+- ランタイムは Node.js 18+ を使用する (MUST)
+
+## コスト制約
+
+- 月額運用コストは $0 を目標とする (MUST)
+- Vercel・Railway ともに無料枠内で運用する (MUST)
+- 無料枠を超過するサービスの導入は事前承認が必要 (MUST)
+- ドメイン費用のみ年額 $0-15 を許容する (SHOULD)
+
 ## 開発ワークフロー
 
 1. `/speckit.specify` — 機能仕様書の作成
@@ -137,4 +137,4 @@ YAGNI（You Aren't Gonna Need It）を厳守する。
 - **ランタイムガイダンス**: 開発時の具体的な指針は
   `.specify/` 配下のテンプレートとコマンドに従う
 
-**Version**: 1.0.0 | **Ratified**: 2026-02-05 | **Last Amended**: 2026-02-05
+**Version**: 1.0.1 | **Ratified**: 2026-02-05 | **Last Amended**: 2026-02-05
