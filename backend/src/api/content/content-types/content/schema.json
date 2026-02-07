@@ -1,0 +1,56 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contents",
+  "info": {
+    "singularName": "content",
+    "pluralName": "contents",
+    "displayName": "Content",
+    "description": "マニュアルコンテンツ"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100,
+      "minLength": 1
+    },
+    "body": {
+      "type": "richtext",
+      "required": true,
+      "maxLength": 50000
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "order": {
+      "type": "integer",
+      "default": 0,
+      "min": 0,
+      "required": true
+    },
+    "published": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "property": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::listing.listing",
+      "inversedBy": "contents"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "contents"
+    }
+  }
+}

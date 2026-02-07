@@ -1,0 +1,409 @@
+openapi: 3.0.3
+info:
+  title: WelcomeBook API
+  description: 民泊ゲストマニュアルシステム API（Strapi REST API）
+  version: 1.0.0
+servers:
+  - url: https://api.welcomebook.example/api
+    description: 本番環境
+  - url: http://localhost:1337/api
+    description: ローカル開発
+
+paths:
+  /properties:
+    get:
+      summary: 物件一覧取得（管理者用）
+      tags: [Property]
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/pagination'
+        - $ref: '#/components/parameters/sort'
+      responses:
+        '200':
+          description: 物件一覧
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /properties/{slug}:
+    get:
+      summary: 物件詳細取得（スラッグ指定、ゲスト用）
+      tags: [Property]
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-z0-9][a-z0-9-]{1,48}[a-z0-9]$'
+          example: tokyo-shibuya-apt
+      responses:
+        '200':
+          description: 物件詳細
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /categories:
+    get:
+      summary: カテゴリ一覧取得
+      tags: [Category]
+      parameters:
+        - name: filters[property][slug][$eq]
+          in: query
+          required: true
+          schema:
+            type: string
+          description: 物件スラッグでフィルタ
+        - name: sort
+          in: query
+          schema:
+            type: string
+            default: order:asc
+      responses:
+        '200':
+          description: カテゴリ一覧（公開コンテンツ数付き）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryListResponse'
+
+  /categories/{id}:
+    get:
+      summary: カテゴリ詳細取得
+      tags: [Category]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: カテゴリ詳細
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /contents:
+    get:
+      summary: コンテンツ一覧取得
+      tags: [Content]
+      parameters:
+        - name: filters[property][slug][$eq]
+          in: query
+          schema:
+            type: string
+          description: 物件スラッグでフィルタ
+        - name: filters[category][id][$eq]
+          in: query
+          schema:
+            type: integer
+          description: カテゴリIDでフィルタ
+        - name: filters[published][$eq]
+          in: query
+          schema:
+            type: boolean
+            default: true
+          description: 公開状態でフィルタ（ゲスト向けはtrue固定）
+        - name: sort
+          in: query
+          schema:
+            type: string
+            default: order:asc
+      responses:
+        '200':
+          description: コンテンツ一覧（サマリー付き）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentListResponse'
+
+  /contents/{id}:
+    get:
+      summary: コンテンツ詳細取得
+      tags: [Content]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: コンテンツ詳細
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # 検索は /contents エンドポイントで $or フィルタを使用
+  # 例: /contents?filters[$or][0][title][$containsi]=keyword&filters[$or][1][body][$containsi]=keyword&filters[property][slug][$eq]=slug&filters[published][$eq]=true
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    pagination:
+      name: pagination
+      in: query
+      schema:
+        type: object
+        properties:
+          page:
+            type: integer
+            default: 1
+          pageSize:
+            type: integer
+            default: 25
+            maximum: 100
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+        example: createdAt:desc
+
+  responses:
+    NotFound:
+      description: リソースが見つかりません
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: 認証が必要です
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            status:
+              type: integer
+            name:
+              type: string
+            message:
+              type: string
+
+    Property:
+      type: object
+      required: [id, name, slug]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          maxLength: 100
+        slug:
+          type: string
+          pattern: '^[a-z0-9][a-z0-9-]{1,48}[a-z0-9]$'
+        address:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+          maxLength: 1000
+        welcomeMessage:
+          type: string
+          maxLength: 2000
+        emergencyContact:
+          type: string
+          maxLength: 200
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    PropertyResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Property'
+        meta:
+          type: object
+
+    PropertyListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    Category:
+      type: object
+      required: [id, name, order]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          maxLength: 50
+        description:
+          type: string
+          maxLength: 200
+        icon:
+          type: string
+          maxLength: 4
+          description: 絵文字
+        order:
+          type: integer
+          minimum: 0
+        contentCount:
+          type: integer
+          description: 公開コンテンツ数（計算値）
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CategoryResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Category'
+        meta:
+          type: object
+
+    CategoryListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    Content:
+      type: object
+      required: [id, title, body, order, published]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+          maxLength: 100
+        body:
+          type: string
+          maxLength: 50000
+          description: リッチテキスト（Markdown）
+        summary:
+          type: string
+          maxLength: 100
+          description: 本文先頭100文字（計算値）
+        images:
+          type: array
+          maxItems: 10
+          items:
+            $ref: '#/components/schemas/Image'
+        order:
+          type: integer
+          minimum: 0
+        published:
+          type: boolean
+        category:
+          $ref: '#/components/schemas/Category'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ContentResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Content'
+        meta:
+          type: object
+
+    ContentListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Content'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    Image:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+          format: uri
+        alternativeText:
+          type: string
+        width:
+          type: integer
+        height:
+          type: integer
+        formats:
+          type: object
+          properties:
+            thumbnail:
+              $ref: '#/components/schemas/ImageFormat'
+            small:
+              $ref: '#/components/schemas/ImageFormat'
+            medium:
+              $ref: '#/components/schemas/ImageFormat'
+
+    ImageFormat:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+        width:
+          type: integer
+        height:
+          type: integer
+
+    PaginationMeta:
+      type: object
+      properties:
+        pagination:
+          type: object
+          properties:
+            page:
+              type: integer
+            pageSize:
+              type: integer
+            pageCount:
+              type: integer
+            total:
+              type: integer
