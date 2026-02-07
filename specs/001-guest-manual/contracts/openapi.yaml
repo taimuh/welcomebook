@@ -149,41 +149,8 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
-  /contents/search:
-    get:
-      summary: コンテンツ検索
-      tags: [Content]
-      parameters:
-        - name: filters[property][slug][$eq]
-          in: query
-          required: true
-          schema:
-            type: string
-          description: 物件スラッグ
-        - name: filters[$or][0][title][$containsi]
-          in: query
-          required: true
-          schema:
-            type: string
-          description: 検索キーワード（タイトル）
-        - name: filters[$or][1][body][$containsi]
-          in: query
-          required: true
-          schema:
-            type: string
-          description: 検索キーワード（本文）
-        - name: filters[published][$eq]
-          in: query
-          schema:
-            type: boolean
-            default: true
-      responses:
-        '200':
-          description: 検索結果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ContentListResponse'
+  # 検索は /contents エンドポイントで $or フィルタを使用
+  # 例: /contents?filters[$or][0][title][$containsi]=keyword&filters[$or][1][body][$containsi]=keyword&filters[property][slug][$eq]=slug&filters[published][$eq]=true
 
 components:
   securitySchemes:

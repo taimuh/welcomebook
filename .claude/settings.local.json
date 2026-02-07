@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(powershell:*)",
+      "Bash(npx create-strapi-app@latest:*)",
+      "Bash(npx create-strapi-app@4:*)",
+      "WebSearch",
+      "Bash(test:*)"
     ]
   }
 }

@@ -93,7 +93,7 @@ YAGNI（You Aren't Gonna Need It）を厳守する。
 | フロントエンド | Next.js (App Router) | 14+ |
 | 言語 | TypeScript | - |
 | スタイリング | Tailwind CSS | - |
-| CMS | Strapi | 4.x |
+| CMS | Strapi | 5.x |
 | DB | PostgreSQL | 14+ |
 | ホスティング（FE） | Vercel | 無料枠 |
 | ホスティング（BE） | Railway | 無料枠 |
@@ -140,4 +140,4 @@ YAGNI（You Aren't Gonna Need It）を厳守する。
 - **ランタイムガイダンス**: 開発時の具体的な指針は
   `.specify/` 配下のテンプレートとコマンドに従う
 
-**Version**: 1.1.0 | **Ratified**: 2026-02-05 | **Last Amended**: 2026-02-05
+**Version**: 1.0.2 | **Ratified**: 2026-02-05 | **Last Amended**: 2026-02-05

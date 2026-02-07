@@ -182,7 +182,57 @@ npm run test:e2e   # E2Eテスト実行
 - 対応形式（JPEG/PNG/GIF/WebP）か確認
 - Strapiのメディアライブラリ設定を確認
 
+## オーナー認証設定 (T015b)
+
+Strapi標準のUsers & Permissionsプラグインを使用してオーナー認証を構成します（FR-009充足）。
+
+### オーナーユーザーの作成
+
+1. Strapi管理画面（http://localhost:1337/admin）にログイン
+2. Settings → Users & Permissions plugin → Roles で権限を確認
+3. 「Authenticated」ロールに以下が自動設定済みであることを確認:
+   - Property: find, findOne, create, update, delete
+   - Category: find, findOne, create, update, delete
+   - Content: find, findOne, create, update, delete
+
+### API経由でのユーザー登録
+
+```bash
+# オーナーユーザーの登録
+curl -X POST http://localhost:1337/api/auth/local/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "owner1",
+    "email": "owner1@example.com",
+    "password": "SecurePass123!"
+  }'
+
+# ログイン（JWTトークン取得）
+curl -X POST http://localhost:1337/api/auth/local \
+  -H "Content-Type: application/json" \
+  -d '{
+    "identifier": "owner1@example.com",
+    "password": "SecurePass123!"
+  }'
+```
+
+レスポンスの `jwt` トークンを使って認証付きAPI呼び出しが可能:
+
+```bash
+curl -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  http://localhost:1337/api/properties
+```
+
+### パーミッション構成
+
+| ロール | Property | Category | Content |
+|--------|----------|----------|---------|
+| Public | find, findOne | find, findOne | find, findOne |
+| Authenticated | CRUD全て | CRUD全て | CRUD全て |
+
+**注記**: isOwnerポリシーにより、認証済みユーザーでも自分の物件のみ編集可能です。
+
 ## 次のステップ
 
-1. `/speckit.tasks` でタスク一覧を生成
-2. Phase 3: 実装開始
+1. Phase 3以降の実装を継続
+2. 各フェーズ完了時にチェックポイントを実施

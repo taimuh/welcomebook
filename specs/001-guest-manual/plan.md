@@ -10,7 +10,7 @@
 ## 技術コンテキスト
 
 **言語/バージョン**: TypeScript / Node.js 18+
-**主要依存関係**: Next.js 14+ (App Router), Strapi 4.x, Tailwind CSS
+**主要依存関係**: Next.js 14+ (App Router), Strapi 5.x, Tailwind CSS
 **ストレージ**: PostgreSQL 14+（Strapi経由）
 **テスト**: Jest, React Testing Library, Playwright (E2E)
 **ターゲットプラットフォーム**: Webアプリケーション（モバイルファースト）

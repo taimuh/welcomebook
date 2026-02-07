@@ -9,7 +9,7 @@
 | フロントエンド | Next.js (App Router) | 14+ |
 | 言語 | TypeScript | - |
 | スタイリング | Tailwind CSS | - |
-| CMS | Strapi | 4.x |
+| CMS | Strapi | 5.x |
 | DB | PostgreSQL | 14+ |
 | ランタイム | Node.js | 18+ |
 | テスト | Jest, Playwright | - |
