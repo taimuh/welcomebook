@@ -36,8 +36,11 @@ test.describe('ゲストがマニュアルを閲覧する', () => {
     const categoryLink = page.getByRole('link').filter({ hasText: /設備|ハウスルール|周辺情報|緊急/ }).first();
     await categoryLink.click();
 
+    // カテゴリページへの遷移を待つ
+    await page.waitForURL(/\/test-property\/cat-/);
+
     // コンテンツがあれば、最初のコンテンツをクリック
-    const contentLink = page.getByRole('link').filter({ hasNotText: /テスト物件/ }).first();
+    const contentLink = page.getByRole('link').filter({ hasNotText: /テスト物件|設備|ハウスルール|周辺情報|緊急/ }).first();
     const contentVisible = await contentLink.isVisible().catch(() => false);
 
     if (contentVisible) {
@@ -71,8 +74,11 @@ test.describe('ゲストがマニュアルを閲覧する', () => {
     if (categoryVisible) {
       await categoryLink.click();
 
+      // カテゴリページへの遷移を待つ
+      await page.waitForURL(/\/test-property\/cat-/);
+
       // タップ2: コンテンツをクリック
-      const contentLink = page.getByRole('link').filter({ hasNotText: /テスト物件/ }).first();
+      const contentLink = page.getByRole('link').filter({ hasNotText: /テスト物件|設備|ハウスルール|周辺情報|緊急/ }).first();
       const contentVisible = await contentLink.isVisible().catch(() => false);
 
       if (contentVisible) {

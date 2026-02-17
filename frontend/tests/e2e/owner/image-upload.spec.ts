@@ -26,8 +26,8 @@ test.describe('オーナーが画像を管理する', () => {
   test('シナリオ4: 画像のalt属性が設定される', async ({ page }) => {
     await page.goto('/test-property');
 
-    // 画像がある場合、alt属性が設定されていることを確認
-    const images = page.getByRole('img');
+    // コンテンツ領域の画像のみをチェック（フレームワーク画像を除外）
+    const images = page.locator('main img');
     const imageCount = await images.count();
 
     for (let i = 0; i < imageCount; i++) {
