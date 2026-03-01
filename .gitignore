@@ -131,6 +131,12 @@ backend/public/uploads/*
 !backend/public/uploads/.gitkeep
 
 ############################
+# Claude Code
+############################
+
+.claude/settings.local.json
+
+############################
 # Misc
 ############################
 

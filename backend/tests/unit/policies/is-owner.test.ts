@@ -11,19 +11,19 @@ describe('isOwner ポリシー', () => {
 
   it('認証済みユーザーが自分の物件を編集できることを確認するテスト設計', () => {
     const user = { id: 1 };
-    const property = { owner: { id: 1 } };
-    expect(property.owner.id).toBe(user.id);
+    const listing = { owner: { id: 1 } };
+    expect(listing.owner.id).toBe(user.id);
   });
 
   it('認証済みユーザーが他人の物件を編集できないことを確認するテスト設計', () => {
     const user = { id: 1 };
-    const property = { owner: { id: 2 } };
-    expect(property.owner.id).not.toBe(user.id);
+    const listing = { owner: { id: 2 } };
+    expect(listing.owner.id).not.toBe(user.id);
   });
 
-  it('新規作成時にbody内のpropertyを確認するロジック', () => {
-    const body = { data: { property: 'prop-1' } };
-    expect(body.data.property).toBeDefined();
+  it('新規作成時にbody内のvenueを確認するロジック', () => {
+    const body = { data: { venue: 'prop-1' } };
+    expect(body.data.venue).toBeDefined();
   });
 
   it('更新・削除時にparams.idを確認するロジック', () => {
@@ -49,17 +49,17 @@ describe('isOwner ポリシー', () => {
     });
   });
 
-  it('Categoryの場合はproperty.ownerを確認するロジック', () => {
+  it('Categoryの場合はvenue.ownerを確認するロジック', () => {
     const category = {
-      property: { owner: { id: 1 } },
+      venue: { owner: { id: 1 } },
     };
-    expect(category.property.owner.id).toBe(1);
+    expect(category.venue.owner.id).toBe(1);
   });
 
-  it('Contentの場合はproperty.ownerを確認するロジック', () => {
+  it('Contentの場合はvenue.ownerを確認するロジック', () => {
     const content = {
-      property: { owner: { id: 1 } },
+      venue: { owner: { id: 1 } },
     };
-    expect(content.property.owner.id).toBe(1);
+    expect(content.venue.owner.id).toBe(1);
   });
 });

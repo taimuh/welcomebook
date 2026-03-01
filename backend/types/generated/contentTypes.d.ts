@@ -475,11 +475,11 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
         number
       > &
       Schema.Attribute.DefaultTo<0>;
-    property: Schema.Attribute.Relation<'manyToOne', 'api::listing.listing'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    venue: Schema.Attribute.Relation<'manyToOne', 'api::listing.listing'>;
   };
 }
 
@@ -520,7 +520,6 @@ export interface ApiContentContent extends Struct.CollectionTypeSchema {
         number
       > &
       Schema.Attribute.DefaultTo<0>;
-    property: Schema.Attribute.Relation<'manyToOne', 'api::listing.listing'>;
     published: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<false>;
@@ -534,6 +533,7 @@ export interface ApiContentContent extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    venue: Schema.Attribute.Relation<'manyToOne', 'api::listing.listing'>;
   };
 }
 
@@ -553,11 +553,6 @@ export interface ApiListingListing extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 200;
       }>;
-    categories: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::category.category'
-    >;
-    contents: Schema.Attribute.Relation<'oneToMany', 'api::content.content'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

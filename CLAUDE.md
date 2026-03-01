@@ -1,4 +1,4 @@
-# WelcomeBook 開発ガイドライン
+﻿# WelcomeBook 開発ガイドライン
 
 自動生成: 2026-02-05
 

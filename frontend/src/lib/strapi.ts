@@ -75,7 +75,7 @@ export async function getCategoriesByProperty(
   propertySlug: string
 ): Promise<Category[]> {
   const response = await fetchApi<StrapiListResponse<Category>>(
-    `/categories?filters[property][slug][$eq]=${encodeURIComponent(
+    `/categories?filters[venue][slug][$eq]=${encodeURIComponent(
       propertySlug
     )}&sort=order:asc&populate[contents][filters][published][$eq]=true&populate[contents][fields][0]=id`
   );
@@ -114,7 +114,7 @@ export async function getContentById(
 ): Promise<Content | null> {
   try {
     const response = await fetchApi<StrapiResponse<Content>>(
-      `/contents/${encodeURIComponent(documentId)}?populate=images,category`
+      `/contents/${encodeURIComponent(documentId)}?populate[0]=images&populate[1]=category`
     );
     return response.data;
   } catch (error) {
@@ -134,7 +134,7 @@ export async function searchContents(
 ): Promise<Content[]> {
   const encodedKeyword = encodeURIComponent(keyword);
   const response = await fetchApi<StrapiListResponse<Content>>(
-    `/contents?filters[property][slug][$eq]=${encodeURIComponent(
+    `/contents?filters[venue][slug][$eq]=${encodeURIComponent(
       propertySlug
     )}&filters[published][$eq]=true&filters[$or][0][title][$containsi]=${encodedKeyword}&filters[$or][1][body][$containsi]=${encodedKeyword}&sort=order:asc`
   );

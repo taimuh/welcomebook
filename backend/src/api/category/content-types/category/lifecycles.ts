@@ -6,14 +6,14 @@
 import { errors } from '@strapi/utils';
 
 export default {
-  async beforeCreate(event: { params: { data: { name?: string; property?: string } } }) {
+  async beforeCreate(event: { params: { data: { name?: string; venue?: string } } }) {
     await validateUniqueName(event.params.data);
   },
 
   async beforeUpdate(event: {
     params: {
       where: { documentId: string };
-      data: { name?: string; property?: string };
+      data: { name?: string; venue?: string };
     };
   }) {
     if (event.params.data.name) {
@@ -23,15 +23,20 @@ export default {
 };
 
 async function validateUniqueName(
-  data: { name?: string; property?: string },
+  data: { name?: string; venue?: any },
   excludeDocumentId?: string
 ) {
-  if (!data.name || !data.property) return;
+  // venue は文字列(documentId) または { connect: [...] } 形式で渡される
+  const venueId = typeof data.venue === 'string'
+    ? data.venue
+    : data.venue?.connect?.[0]?.documentId ?? data.venue?.connect?.[0] ?? null;
+
+  if (!data.name || !venueId) return;
 
   const existing = await strapi.documents('api::category.category').findMany({
     filters: {
       name: data.name,
-      property: { documentId: data.property },
+      venue: venueId,
     } as any,
   });
 
