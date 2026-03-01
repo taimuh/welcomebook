@@ -179,7 +179,7 @@ function handleCategories(req, res, url) {
     }, 403);
   }
 
-  const propertySlug = getQueryParam(url, 'filters[property][slug][$eq]');
+  const propertySlug = getQueryParam(url, 'filters[venue][slug][$eq]');
   if (propertySlug === 'test-property') {
     return jsonResponse(res, {
       data: mockCategories,

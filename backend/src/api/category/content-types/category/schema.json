@@ -32,11 +32,10 @@
       "min": 0,
       "required": true
     },
-    "property": {
+    "venue": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::listing.listing",
-      "inversedBy": "categories"
+      "target": "api::listing.listing"
     },
     "contents": {
       "type": "relation",

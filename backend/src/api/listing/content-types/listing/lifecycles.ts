@@ -42,8 +42,8 @@ export default {
       await strapi.documents('api::category.category').create({
         data: {
           ...category,
-          property: result.documentId,
-        },
+          venue: { connect: [result.documentId] },
+        } as any,
       });
     }
   },

@@ -40,11 +40,10 @@
       "default": false,
       "required": true
     },
-    "property": {
+    "venue": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::listing.listing",
-      "inversedBy": "contents"
+      "target": "api::listing.listing"
     },
     "category": {
       "type": "relation",

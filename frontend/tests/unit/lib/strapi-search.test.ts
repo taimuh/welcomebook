@@ -65,7 +65,7 @@ describe('searchContents', () => {
     const calledUrl = mockFetch.mock.calls[0][0];
     expect(calledUrl).toContain('filters[$or][0][title][$containsi]');
     expect(calledUrl).toContain('filters[$or][1][body][$containsi]');
-    expect(calledUrl).toContain('filters[property][slug][$eq]=test-property');
+    expect(calledUrl).toContain('filters[venue][slug][$eq]=test-property');
     expect(calledUrl).toContain('filters[published][$eq]=true');
   });
 
@@ -110,6 +110,6 @@ describe('searchContents', () => {
     await searchContents('my-property', 'test');
 
     const calledUrl = mockFetch.mock.calls[0][0];
-    expect(calledUrl).toContain('filters[property][slug][$eq]=my-property');
+    expect(calledUrl).toContain('filters[venue][slug][$eq]=my-property');
   });
 });
