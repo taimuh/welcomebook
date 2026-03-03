@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WelcomeBook — マニュアル</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================
+   DESIGN TOKENS (from Design System v1.0)
+   ============================================ */
+:root {
+  --color-bg:           #F7F4EF;
+  --color-surface:      #FDFCFA;
+  --color-surface-warm: #F0EBE1;
+  --color-border:       #E2DAD0;
+  --color-border-strong:#C8BDB0;
+
+  --color-ink:          #1A1714;
+  --color-ink-mid:      #4A4440;
+  --color-ink-soft:     #7A736D;
+  --color-ink-muted:    #A89F98;
+
+  --color-primary:      #2C3E6B;
+  --color-primary-light:#3D5285;
+  --color-primary-hover:#1E2D52;
+  --color-primary-tint: #EEF1F8;
+
+  --color-accent:       #B5813A;
+  --color-accent-light: #F5E9D5;
+
+  --color-success:      #3D7A5C;
+  --color-success-light:#E6F3EC;
+  --color-warning:      #A05A1A;
+  --color-warning-light:#FAF0E4;
+  --color-danger:       #8B2E2E;
+  --color-danger-light: #F5E8E8;
+
+  --cat-checkin:     #2C5F8A;
+  --cat-checkin-bg:  #EAF2F8;
+  --cat-equipment:   #3D6B4A;
+  --cat-equipment-bg:#EBF3EE;
+  --cat-area:        #6B4A2C;
+  --cat-area-bg:     #F3ECEB;
+  --cat-rules:       #5A3D8A;
+  --cat-rules-bg:    #F0EBFA;
+  --cat-emergency:   #8A2C2C;
+  --cat-emergency-bg:#FAE8E8;
+
+  --font-display: 'Shippori Mincho', serif;
+  --font-body:    'Noto Sans JP', 'DM Sans', sans-serif;
+  --font-ui:      'DM Sans', 'Noto Sans JP', sans-serif;
+
+  --text-xs:   11px;
+  --text-sm:   13px;
+  --text-base: 15px;
+  --text-md:   17px;
+  --text-lg:   20px;
+  --text-xl:   24px;
+  --text-2xl:  30px;
+  --text-3xl:  38px;
+
+  --space-1: 4px;  --space-2: 8px;   --space-3: 12px;
+  --space-4: 16px; --space-5: 20px;  --space-6: 24px;
+  --space-8: 32px; --space-10: 40px; --space-12: 48px;
+  --space-16: 64px;
+
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px;
+  --radius-xl: 20px; --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 3px rgba(26,23,20,0.06), 0 1px 2px rgba(26,23,20,0.04);
+  --shadow-md: 0 4px 12px rgba(26,23,20,0.08), 0 2px 4px rgba(26,23,20,0.04);
+  --shadow-lg: 0 8px 28px rgba(26,23,20,0.10), 0 4px 8px rgba(26,23,20,0.05);
+  --shadow-card: 0 2px 8px rgba(26,23,20,0.07);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-base: 240ms;
+
+  /* Layout */
+  --sidebar-width: 280px;
+  --content-max: 720px;
+  --nav-height: 56px;
+}
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-ink-mid);
+  background: var(--color-bg);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+/* ============================================
+   TOP NAVIGATION
+   ============================================ */
+.wb-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-5);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+.wb-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.wb-nav-icon {
+  width: 32px; height: 32px;
+  background: var(--color-primary);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.wb-nav-name {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--color-ink);
+  letter-spacing: -0.01em;
+}
+.wb-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.wb-nav-btn {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-ink-soft);
+  transition: background var(--duration-fast), color var(--duration-fast);
+}
+.wb-nav-btn:hover {
+  background: var(--color-surface-warm);
+  color: var(--color-ink);
+}
+/* Mobile menu toggle */
+.menu-toggle {
+  display: none;
+}
+
+/* ============================================
+   LAYOUT: SIDEBAR + CONTENT
+   ============================================ */
+.wb-layout {
+  padding-top: var(--nav-height);
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.wb-sidebar {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  width: var(--sidebar-width);
+  height: calc(100vh - var(--nav-height));
+  overflow-y: auto;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+.wb-sidebar::-webkit-scrollbar { width: 4px; }
+.wb-sidebar::-webkit-scrollbar-track { background: transparent; }
+.wb-sidebar::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+
+/* Sidebar: property header */
+.sidebar-property {
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+.sidebar-property-name {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: var(--space-1);
+}
+.sidebar-property-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--color-success);
+  font-family: var(--font-ui);
+  font-weight: 500;
+}
+.badge-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #5AE68A;
+  box-shadow: 0 0 6px #5AE68A;
+  flex-shrink: 0;
+}
+
+/* Sidebar: search */
+.sidebar-search {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+.wb-search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 7px var(--space-3);
+  transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+.wb-search:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(44,62,107,0.1);
+}
+.wb-search input {
+  border: none; outline: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--color-ink);
+  width: 100%;
+}
+.wb-search input::placeholder { color: var(--color-ink-muted); }
+.wb-search-icon { color: var(--color-ink-muted); flex-shrink: 0; }
+
+/* Sidebar: nav */
+.sidebar-nav { flex: 1; padding: var(--space-3) 0 var(--space-6); }
+.sidebar-cat-group { margin-bottom: var(--space-1); }
+.sidebar-cat-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--text-sm);
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-ink);
+  transition: background var(--duration-fast);
+  position: relative;
+}
+.sidebar-cat-btn:hover { background: var(--color-surface-warm); }
+.sidebar-cat-btn.active { background: var(--color-primary-tint); color: var(--color-primary); }
+.sidebar-cat-btn::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 3px; height: 0;
+  border-radius: 0 2px 2px 0;
+  transition: height var(--duration-base);
+}
+.sidebar-cat-btn.active::before { height: 60%; }
+.sidebar-cat-btn.cat-checkin.active::before { background: var(--cat-checkin); }
+.sidebar-cat-btn.cat-equipment.active::before { background: var(--cat-equipment); }
+.sidebar-cat-btn.cat-area.active::before { background: var(--cat-area); }
+.sidebar-cat-btn.cat-rules.active::before { background: var(--cat-rules); }
+.sidebar-cat-btn.cat-emergency.active::before { background: var(--cat-emergency); }
+
+.sidebar-cat-icon {
+  width: 28px; height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.cat-checkin   .sidebar-cat-icon { background: var(--cat-checkin-bg); }
+.cat-equipment .sidebar-cat-icon { background: var(--cat-equipment-bg); }
+.cat-area      .sidebar-cat-icon { background: var(--cat-area-bg); }
+.cat-rules     .sidebar-cat-icon { background: var(--cat-rules-bg); }
+.cat-emergency .sidebar-cat-icon { background: var(--cat-emergency-bg); }
+
+.sidebar-cat-count {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+  font-family: var(--font-ui);
+  font-weight: 400;
+}
+.sidebar-cat-chevron {
+  color: var(--color-border-strong);
+  transition: transform var(--duration-base);
+  flex-shrink: 0;
+}
+.sidebar-cat-group.open .sidebar-cat-chevron { transform: rotate(90deg); }
+
+/* Sidebar: manual links */
+.sidebar-manuals {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s var(--ease-out);
+}
+.sidebar-cat-group.open .sidebar-manuals { max-height: 500px; }
+.sidebar-manual-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 8px var(--space-5) 8px calc(var(--space-5) + 28px + var(--space-3));
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+  transition: color var(--duration-fast), background var(--duration-fast);
+  position: relative;
+}
+.sidebar-manual-link::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--space-5) + 14px);
+  top: 50%;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--color-border-strong);
+  transform: translateY(-50%);
+  transition: background var(--duration-fast);
+}
+.sidebar-manual-link:hover { color: var(--color-ink); background: var(--color-surface-warm); }
+.sidebar-manual-link.active { color: var(--color-primary); font-weight: 500; }
+.sidebar-manual-link.active::before { background: var(--color-primary); }
+
+/* ============================================
+   MAIN CONTENT AREA
+   ============================================ */
+.wb-main {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Breadcrumb */
+.wb-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--text-xs);
+  font-family: var(--font-ui);
+  color: var(--color-ink-soft);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  flex-wrap: wrap;
+}
+.wb-bc-link { color: var(--color-primary); }
+.wb-bc-link:hover { text-decoration: underline; }
+.wb-bc-sep { color: var(--color-border-strong); }
+
+/* Content container */
+.wb-content {
+  flex: 1;
+  max-width: calc(var(--content-max) + var(--space-16));
+  padding: var(--space-10) var(--space-8);
+}
+
+/* ============================================
+   HOME VIEW: CATEGORY CARDS GRID
+   ============================================ */
+.home-header {
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+.home-eyebrow {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-ink-muted);
+  font-family: var(--font-ui);
+  margin-bottom: var(--space-2);
+}
+.home-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: var(--color-ink);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: var(--space-2);
+}
+.home-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+  font-weight: 300;
+}
+.gold-line {
+  width: 40px; height: 3px;
+  background: var(--color-accent);
+  border-radius: var(--radius-full);
+  margin: var(--space-4) 0;
+}
+
+.cats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-10);
+}
+.cat-card {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6) var(--space-5);
+  cursor: pointer;
+  transition: transform var(--duration-base) var(--ease-out),
+              box-shadow var(--duration-base) var(--ease-out),
+              border-color var(--duration-fast);
+  position: relative;
+  overflow: hidden;
+}
+.cat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
+  border-radius: var(--radius-full) 0 0 var(--radius-full);
+}
+.cat-card.cat-checkin::before   { background: var(--cat-checkin); }
+.cat-card.cat-equipment::before { background: var(--cat-equipment); }
+.cat-card.cat-area::before      { background: var(--cat-area); }
+.cat-card.cat-rules::before     { background: var(--cat-rules); }
+.cat-card.cat-emergency::before { background: var(--cat-emergency); }
+.cat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+.cat-icon-wrap {
+  width: 48px; height: 48px;
+  border-radius: var(--radius-lg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  margin-bottom: var(--space-4);
+}
+.cat-checkin   .cat-icon-wrap { background: var(--cat-checkin-bg); }
+.cat-equipment .cat-icon-wrap { background: var(--cat-equipment-bg); }
+.cat-area      .cat-icon-wrap { background: var(--cat-area-bg); }
+.cat-rules     .cat-icon-wrap { background: var(--cat-rules-bg); }
+.cat-emergency .cat-icon-wrap { background: var(--cat-emergency-bg); }
+.cat-name {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: var(--space-1);
+}
+.cat-count {
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+  font-family: var(--font-ui);
+}
+.cat-desc {
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+  margin-top: var(--space-2);
+  line-height: 1.5;
+}
+
+/* Emergency card (full width) */
+.emergency-card {
+  background: var(--color-danger-light);
+  border: 1.5px solid rgba(139,46,46,0.2);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5) var(--space-6);
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  cursor: pointer;
+  transition: box-shadow var(--duration-fast), transform var(--duration-base) var(--ease-out);
+  margin-bottom: var(--space-10);
+}
+.emergency-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.emergency-icon {
+  width: 52px; height: 52px;
+  background: var(--color-danger);
+  border-radius: var(--radius-lg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.emergency-label {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-danger);
+  margin-bottom: 2px;
+}
+.emergency-desc {
+  font-size: var(--text-sm);
+  color: rgba(139,46,46,0.65);
+  font-family: var(--font-ui);
+}
+.emergency-arrow {
+  margin-left: auto;
+  color: var(--color-danger);
+  opacity: 0.4;
+}
+
+/* ============================================
+   MANUAL DETAIL VIEW
+   ============================================ */
+#manual-detail { display: none; }
+#home-view { display: block; }
+
+.manual-header {
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+.manual-cat-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 4px var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  font-family: var(--font-ui);
+  margin-bottom: var(--space-4);
+}
+.tag-checkin   { background: var(--cat-checkin-bg);   color: var(--cat-checkin); }
+.tag-equipment { background: var(--cat-equipment-bg); color: var(--cat-equipment); }
+.tag-area      { background: var(--cat-area-bg);      color: var(--cat-area); }
+.tag-rules     { background: var(--cat-rules-bg);     color: var(--cat-rules); }
+.tag-emergency { background: var(--cat-emergency-bg); color: var(--cat-emergency); }
+
+.manual-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: var(--color-ink);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: var(--space-3);
+}
+.manual-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-xs);
+  font-family: var(--font-ui);
+  color: var(--color-ink-muted);
+  flex-wrap: wrap;
+}
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  background: var(--color-surface-warm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+}
+
+/* Manual body typography */
+.manual-body {
+  font-size: var(--text-base);
+  color: var(--color-ink-mid);
+  line-height: 1.75;
+  max-width: var(--content-max);
+}
+.manual-body h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: var(--space-8) 0 var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  letter-spacing: -0.01em;
+}
+.manual-body h3:first-child { margin-top: 0; }
+.manual-body h4 {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 500;
+  color: var(--color-ink);
+  margin: var(--space-6) 0 var(--space-3);
+}
+.manual-body p { margin-bottom: var(--space-4); }
+.manual-body ol, .manual-body ul {
+  padding-left: var(--space-6);
+  margin-bottom: var(--space-5);
+}
+.manual-body li { margin-bottom: var(--space-2); }
+.manual-body strong { color: var(--color-ink); font-weight: 500; }
+
+/* Info / warning boxes */
+.wb-info-box {
+  display: flex;
+  gap: var(--space-4);
+  background: var(--color-primary-tint);
+  border: 1px solid rgba(44,62,107,0.15);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  margin: var(--space-5) 0;
+}
+.wb-info-box-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+.wb-info-box-text { font-size: var(--text-sm); color: var(--color-primary); line-height: 1.6; }
+.wb-info-box-text strong { color: var(--color-primary-hover); }
+.wb-warning-box {
+  display: flex;
+  gap: var(--space-4);
+  background: var(--color-warning-light);
+  border: 1px solid rgba(160,90,26,0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  margin: var(--space-5) 0;
+}
+.wb-warning-box .wb-info-box-text { color: var(--color-warning); }
+.wb-success-box {
+  display: flex;
+  gap: var(--space-4);
+  background: var(--color-success-light);
+  border: 1px solid rgba(61,122,92,0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  margin: var(--space-5) 0;
+}
+.wb-success-box .wb-info-box-text { color: var(--color-success); }
+
+/* Steps */
+.steps-list { margin: var(--space-5) 0; list-style: none; padding: 0; }
+.step-item {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+.step-num {
+  width: 28px; height: 28px;
+  background: var(--color-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  font-family: var(--font-ui);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.step-content { flex: 1; }
+.step-title {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: var(--space-1);
+}
+.step-desc { font-size: var(--text-sm); color: var(--color-ink-soft); }
+
+/* Image placeholder */
+.img-placeholder {
+  background: var(--color-surface-warm);
+  border: 1.5px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin: var(--space-5) 0;
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-family: var(--font-ui);
+}
+.img-placeholder-icon { font-size: 32px; }
+
+/* Divider */
+.wb-divider { height: 1px; background: var(--color-border); margin: var(--space-8) 0; }
+
+/* Pager */
+.wb-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  margin-top: var(--space-10);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+.wb-pager-btn {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  cursor: pointer;
+  transition: border-color var(--duration-fast), box-shadow var(--duration-fast), background var(--duration-fast);
+}
+.wb-pager-btn:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-tint);
+  box-shadow: var(--shadow-sm);
+}
+.wb-pager-btn.next { text-align: right; }
+.wb-pager-dir { font-size: var(--text-xs); color: var(--color-ink-muted); font-family: var(--font-ui); margin-bottom: 3px; }
+.wb-pager-title { font-size: var(--text-sm); font-weight: 500; color: var(--color-primary); font-family: var(--font-display); }
+
+/* ============================================
+   MOBILE: BOTTOM TAB BAR
+   ============================================ */
+.wb-tabbar {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-2) 0;
+  z-index: 200;
+}
+.wb-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: var(--space-2) var(--space-1);
+  color: var(--color-ink-muted);
+  transition: color var(--duration-fast);
+  font-size: var(--text-xs);
+  font-family: var(--font-ui);
+}
+.wb-tab.active { color: var(--color-primary); }
+.wb-tab-icon { font-size: 20px; }
+
+/* Mobile sidebar overlay */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26,23,20,0.4);
+  z-index: 90;
+  backdrop-filter: blur(2px);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.anim-fadeup { animation: fadeUp 0.5s var(--ease-out) both; }
+.anim-delay-1 { animation-delay: 0.05s; }
+.anim-delay-2 { animation-delay: 0.1s; }
+.anim-delay-3 { animation-delay: 0.15s; }
+.anim-delay-4 { animation-delay: 0.2s; }
+.anim-delay-5 { animation-delay: 0.25s; }
+
+/* ============================================
+   RESPONSIVE: TABLET & MOBILE
+   ============================================ */
+@media (max-width: 900px) {
+  :root {
+    --sidebar-width: 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Hide sidebar, show as drawer */
+  .wb-sidebar {
+    transform: translateX(-100%);
+  }
+  .wb-sidebar.open {
+    transform: translateX(0);
+  }
+  .sidebar-overlay.visible { display: block; animation: fadeIn 0.2s ease both; }
+  .menu-toggle { display: flex !important; }
+
+  /* Main takes full width */
+  .wb-main { margin-left: 0; }
+
+  /* Breadcrumb padding */
+  .wb-breadcrumb { padding: var(--space-3) var(--space-4); }
+
+  /* Content padding */
+  .wb-content { padding: var(--space-6) var(--space-4); }
+
+  /* Bottom tab bar */
+  .wb-tabbar { display: flex; }
+  body { padding-bottom: 64px; }
+
+  /* Home title */
+  .home-title { font-size: var(--text-xl); }
+
+  /* Category grid: 2 cols */
+  .cats-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Emergency card */
+  .emergency-card { padding: var(--space-4) var(--space-5); }
+
+  /* Pager */
+  .wb-pager { grid-template-columns: 1fr; }
+  .wb-pager-btn.next { text-align: left; }
+}
+
+@media (max-width: 480px) {
+  .cats-grid { grid-template-columns: 1fr 1fr; }
+  .manual-title { font-size: var(--text-xl); }
+}
+
+/* ============================================
+   VIEW TRANSITIONS
+   ============================================ */
+.view { animation: fadeUp 0.35s var(--ease-out) both; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- TOP NAVIGATION -->
+<header class="wb-nav">
+  <div class="wb-nav-brand">
+    <button class="wb-nav-btn menu-toggle" onclick="toggleSidebar()" style="display:none; width:36px; height:36px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="wb-nav-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </div>
+    <span class="wb-nav-name" onclick="showHome()" style="cursor:pointer;">WelcomeBook</span>
+  </div>
+  <div class="wb-nav-actions">
+    <button class="wb-nav-btn" title="検索" onclick="document.querySelector('.sidebar-search input').focus(); openSidebar();">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- LAYOUT WRAPPER -->
+<div class="wb-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="wb-sidebar" id="sidebar">
+    <!-- Property info -->
+    <div class="sidebar-property">
+      <div class="sidebar-property-name">東京タワービュー201</div>
+      <div class="sidebar-property-badge"><span class="badge-dot"></span>オープン中</div>
+    </div>
+
+    <!-- Search -->
+    <div class="sidebar-search">
+      <div class="wb-search">
+        <div class="wb-search-icon">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <input type="text" placeholder="検索...">
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="sidebar-nav">
+      <!-- Home link -->
+      <button onclick="showHome()" class="sidebar-cat-btn" style="font-family: var(--font-ui); font-weight:500; font-size: var(--text-sm); color: var(--color-ink-soft);" id="home-nav-btn">
+        <div class="sidebar-cat-icon" style="background: var(--color-surface-warm); font-size: 14px;">🏠</div>
+        ホーム
+      </button>
+
+      <!-- Category: Check-in -->
+      <div class="sidebar-cat-group open" id="group-checkin">
+        <button class="sidebar-cat-btn cat-checkin active" onclick="toggleGroup('group-checkin'); showManual('checkin-1', 'checkin')">
+          <div class="sidebar-cat-icon">🗝️</div>
+          チェックイン・アウト
+          <span class="sidebar-cat-count">5</span>
+          <svg class="sidebar-cat-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="sidebar-manuals">
+          <a class="sidebar-manual-link active" onclick="showManual('checkin-1', 'checkin'); return false;" href="#">チェックインの手順</a>
+          <a class="sidebar-manual-link" onclick="showManual('checkin-2', 'checkin'); return false;" href="#">チェックアウトの手順</a>
+          <a class="sidebar-manual-link" onclick="showManual('checkin-3', 'checkin'); return false;" href="#">キーボックスの開け方</a>
+          <a class="sidebar-manual-link" onclick="showManual('checkin-4', 'checkin'); return false;" href="#">駐車場について</a>
+          <a class="sidebar-manual-link" onclick="showManual('checkin-5', 'checkin'); return false;" href="#">荷物の一時預かり</a>
+        </div>
+      </div>
+
+      <!-- Category: Equipment -->
+      <div class="sidebar-cat-group" id="group-equipment">
+        <button class="sidebar-cat-btn cat-equipment" onclick="toggleGroup('group-equipment'); showManual('equip-1', 'equipment')">
+          <div class="sidebar-cat-icon">🏠</div>
+          設備の使い方
+          <span class="sidebar-cat-count">8</span>
+          <svg class="sidebar-cat-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="sidebar-manuals">
+          <a class="sidebar-manual-link" onclick="showManual('equip-1', 'equipment'); return false;" href="#">WiFiの接続方法</a>
+          <a class="sidebar-manual-link" onclick="showManual('equip-2', 'equipment'); return false;" href="#">エアコンの使い方</a>
+          <a class="sidebar-manual-link" onclick="showManual('equip-3', 'equipment'); return false;" href="#">洗濯機・乾燥機</a>
+          <a class="sidebar-manual-link" onclick="showManual('equip-4', 'equipment'); return false;" href="#">テレビ・リモコン</a>
+          <a class="sidebar-manual-link" onclick="showManual('equip-5', 'equipment'); return false;" href="#">キッチン設備</a>
+          <a class="sidebar-manual-link" onclick="showManual('equip-6', 'equipment'); return false;" href="#">バスルーム</a>
+          <a class="sidebar-manual-link" onclick="showManual('equip-7', 'equipment'); return false;" href="#">ゴミの分別方法</a>
+          <a class="sidebar-manual-link" onclick="showManual('equip-8', 'equipment'); return false;" href="#">禁煙・禁煙エリア</a>
+        </div>
+      </div>
+
+      <!-- Category: Area -->
+      <div class="sidebar-cat-group" id="group-area">
+        <button class="sidebar-cat-btn cat-area" onclick="toggleGroup('group-area'); showManual('area-1', 'area')">
+          <div class="sidebar-cat-icon">🗺️</div>
+          周辺情報
+          <span class="sidebar-cat-count">6</span>
+          <svg class="sidebar-cat-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="sidebar-manuals">
+          <a class="sidebar-manual-link" onclick="showManual('area-1', 'area'); return false;" href="#">近くのコンビニ・スーパー</a>
+          <a class="sidebar-manual-link" onclick="showManual('area-2', 'area'); return false;" href="#">最寄り駅・交通手段</a>
+          <a class="sidebar-manual-link" onclick="showManual('area-3', 'area'); return false;" href="#">おすすめレストラン</a>
+          <a class="sidebar-manual-link" onclick="showManual('area-4', 'area'); return false;" href="#">観光スポット</a>
+          <a class="sidebar-manual-link" onclick="showManual('area-5', 'area'); return false;" href="#">病院・薬局</a>
+          <a class="sidebar-manual-link" onclick="showManual('area-6', 'area'); return false;" href="#">銀行・ATM</a>
+        </div>
+      </div>
+
+      <!-- Category: Rules -->
+      <div class="sidebar-cat-group" id="group-rules">
+        <button class="sidebar-cat-btn cat-rules" onclick="toggleGroup('group-rules'); showManual('rules-1', 'rules')">
+          <div class="sidebar-cat-icon">📋</div>
+          ハウスルール
+          <span class="sidebar-cat-count">4</span>
+          <svg class="sidebar-cat-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="sidebar-manuals">
+          <a class="sidebar-manual-link" onclick="showManual('rules-1', 'rules'); return false;" href="#">基本的なルール</a>
+          <a class="sidebar-manual-link" onclick="showManual('rules-2', 'rules'); return false;" href="#">騒音について</a>
+          <a class="sidebar-manual-link" onclick="showManual('rules-3', 'rules'); return false;" href="#">ペットについて</a>
+          <a class="sidebar-manual-link" onclick="showManual('rules-4', 'rules'); return false;" href="#">パーティー・イベント</a>
+        </div>
+      </div>
+
+      <!-- Category: Emergency -->
+      <div class="sidebar-cat-group" id="group-emergency">
+        <button class="sidebar-cat-btn cat-emergency" onclick="toggleGroup('group-emergency'); showManual('emergency-1', 'emergency')">
+          <div class="sidebar-cat-icon">🚨</div>
+          緊急連絡先
+          <span class="sidebar-cat-count">2</span>
+          <svg class="sidebar-cat-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="sidebar-manuals">
+          <a class="sidebar-manual-link" onclick="showManual('emergency-1', 'emergency'); return false;" href="#">緊急時の連絡先一覧</a>
+          <a class="sidebar-manual-link" onclick="showManual('emergency-2', 'emergency'); return false;" href="#">よくあるトラブル対応</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="wb-main">
+
+    <!-- BREADCRUMB -->
+    <div class="wb-breadcrumb" id="breadcrumb">
+      <a class="wb-bc-link" onclick="showHome(); return false;" href="#">ホーム</a>
+      <span class="wb-bc-sep">›</span>
+      <span id="breadcrumb-cat">チェックイン・アウト</span>
+      <span class="wb-bc-sep" id="bc-sep2">›</span>
+      <span id="breadcrumb-page">チェックインの手順</span>
+    </div>
+
+    <!-- HOME VIEW -->
+    <div class="wb-content" id="home-view">
+      <div class="view">
+        <div class="home-header anim-fadeup">
+          <div class="home-eyebrow">ゲストガイド</div>
+          <h1 class="home-title">ようこそ、<br>WelcomeBookへ</h1>
+          <div class="gold-line"></div>
+          <p class="home-subtitle">ご滞在をより快適にお過ごしいただくための<br>情報をカテゴリごとにご案内しています。</p>
+        </div>
+
+        <!-- Emergency -->
+        <div class="emergency-card anim-fadeup anim-delay-1" onclick="showManual('emergency-1', 'emergency')">
+          <div class="emergency-icon">🚨</div>
+          <div>
+            <div class="emergency-label">緊急連絡先</div>
+            <div class="emergency-desc">オーナー直通・警察・消防・救急</div>
+          </div>
+          <svg class="emergency-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+
+        <div style="font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-muted); font-family: var(--font-ui); font-weight: 500; margin-bottom: var(--space-4);" class="anim-fadeup anim-delay-1">カテゴリから探す</div>
+        <div class="cats-grid">
+          <div class="cat-card cat-checkin anim-fadeup anim-delay-1" onclick="showManual('checkin-1', 'checkin')">
+            <div class="cat-icon-wrap">🗝️</div>
+            <div class="cat-name">チェックイン・アウト</div>
+            <div class="cat-count">5件のマニュアル</div>
+            <div class="cat-desc">到着から出発まで、スムーズなご滞在のために</div>
+          </div>
+          <div class="cat-card cat-equipment anim-fadeup anim-delay-2" onclick="showManual('equip-1', 'equipment')">
+            <div class="cat-icon-wrap">🏠</div>
+            <div class="cat-name">設備の使い方</div>
+            <div class="cat-count">8件のマニュアル</div>
+            <div class="cat-desc">家電・設備の操作方法をわかりやすく解説</div>
+          </div>
+          <div class="cat-card cat-area anim-fadeup anim-delay-3" onclick="showManual('area-1', 'area')">
+            <div class="cat-icon-wrap">🗺️</div>
+            <div class="cat-name">周辺情報</div>
+            <div class="cat-count">6件のマニュアル</div>
+            <div class="cat-desc">近隣のショップ・グルメ・交通情報</div>
+          </div>
+          <div class="cat-card cat-rules anim-fadeup anim-delay-4" onclick="showManual('rules-1', 'rules')">
+            <div class="cat-icon-wrap">📋</div>
+            <div class="cat-name">ハウスルール</div>
+            <div class="cat-count">4件のマニュアル</div>
+            <div class="cat-desc">ご近所への配慮とご利用上の注意事項</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MANUAL DETAIL VIEW -->
+    <div class="wb-content" id="manual-detail">
+      <div id="manual-content"></div>
+    </div>
+  </main>
+</div>
+
+<!-- BOTTOM TAB BAR (mobile) -->
+<nav class="wb-tabbar">
+  <a class="wb-tab active" id="tab-home" onclick="showHome(); setActiveTab('tab-home')">
+    <span class="wb-tab-icon">🏠</span>
+    <span>ホーム</span>
+  </a>
+  <a class="wb-tab" id="tab-manual" onclick="toggleSidebar(); setActiveTab('tab-manual')">
+    <span class="wb-tab-icon">📚</span>
+    <span>カテゴリ</span>
+  </a>
+  <a class="wb-tab" id="tab-search">
+    <span class="wb-tab-icon">🔍</span>
+    <span>検索</span>
+  </a>
+  <a class="wb-tab" id="tab-emergency" onclick="showManual('emergency-1', 'emergency'); setActiveTab('tab-emergency')">
+    <span class="wb-tab-icon">📞</span>
+    <span>緊急</span>
+  </a>
+</nav>
+
+<!-- MANUAL CONTENT TEMPLATES -->
+<script>
+const MANUALS = {
+  'checkin-1': {
+    cat: 'checkin', catLabel: 'チェックイン・アウト', catIcon: '🗝️',
+    title: 'チェックインの手順',
+    updated: '2025年2月4日',
+    prev: null,
+    next: { id: 'checkin-2', title: 'チェックアウトの手順' },
+    html: `
+      <ul class="steps-list">
+        <li class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">キーボックスを確認する</div>
+            <div class="step-desc">玄関ドア右側のグレーのキーボックスをご確認ください。</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">暗証番号を入力する</div>
+            <div class="step-desc">予約確認メールに記載された4桁の番号を入力し、ボタンを押してください。</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">鍵を取り出して入室する</div>
+            <div class="step-desc">ボックスが開いたら鍵を取り出し、玄関ドアを解錠してください。</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">入室後の確認</div>
+            <div class="step-desc">室内の電気・水道・エアコンが正常に動作することをご確認ください。</div>
+          </div>
+        </li>
+      </ul>
+      <div class="wb-info-box">
+        <div class="wb-info-box-icon">ℹ️</div>
+        <div class="wb-info-box-text"><strong>暗証番号が不明な場合：</strong>予約確認メールをご確認いただくか、オーナーまでご連絡ください。</div>
+      </div>
+      <div class="img-placeholder">
+        <div class="img-placeholder-icon">📷</div>
+        <span>キーボックスの写真</span>
+      </div>
+      <h3>入室後にすること</h3>
+      <p>玄関を入ったら、スリッパをご利用ください。室内は土足厳禁です。</p>
+      <ul>
+        <li>エアコンのリモコンは玄関正面の棚にあります</li>
+        <li>WiFiのパスワードはテレビ横のカードに記載されています</li>
+        <li>ゴミ箱はキッチン下の引き出し内にあります</li>
+      </ul>
+      <div class="wb-warning-box">
+        <div class="wb-info-box-icon">⚠️</div>
+        <div class="wb-info-box-text"><strong>深夜到着の場合：</strong>22時以降は廊下での会話・音量にご注意ください。ご近所の方々へのご配慮をお願いします。</div>
+      </div>
+    `
+  },
+  'checkin-2': {
+    cat: 'checkin', catLabel: 'チェックイン・アウト', catIcon: '🗝️',
+    title: 'チェックアウトの手順',
+    updated: '2025年2月4日',
+    prev: { id: 'checkin-1', title: 'チェックインの手順' },
+    next: { id: 'checkin-3', title: 'キーボックスの開け方' },
+    html: `
+      <h3>チェックアウト時刻</h3>
+      <div class="wb-info-box">
+        <div class="wb-info-box-icon">🕙</div>
+        <div class="wb-info-box-text"><strong>チェックアウトは午前10時まで</strong>です。延長ご希望の場合は前日までにオーナーへご相談ください。</div>
+      </div>
+      <h3>チェックアウトの手順</h3>
+      <ul class="steps-list">
+        <li class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">室内の確認</div>
+            <div class="step-desc">忘れ物がないか全部屋をご確認ください。</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">電気・エアコンをオフにする</div>
+            <div class="step-desc">全ての電気、エアコン、テレビをお切りください。</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">鍵をキーボックスに返却する</div>
+            <div class="step-desc">鍵をキーボックスに入れ、扉を閉めてロックしてください。</div>
+          </div>
+        </li>
+      </ul>
+      <div class="wb-success-box">
+        <div class="wb-info-box-icon">✅</div>
+        <div class="wb-info-box-text">ご滞在ありがとうございました。またのご利用をお待ちしています！</div>
+      </div>
+    `
+  },
+  'equip-1': {
+    cat: 'equipment', catLabel: '設備の使い方', catIcon: '🏠',
+    title: 'WiFiの接続方法',
+    updated: '2025年2月1日',
+    prev: null,
+    next: { id: 'equip-2', title: 'エアコンの使い方' },
+    html: `
+      <div class="wb-info-box">
+        <div class="wb-info-box-icon">📶</div>
+        <div class="wb-info-box-text">WiFiルーターはテレビ横の棚に設置されています。</div>
+      </div>
+      <h3>接続情報</h3>
+      <div style="background: var(--color-surface-warm); border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); margin: var(--space-4) 0;">
+        <div style="display: grid; gap: var(--space-3);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: var(--text-sm); color: var(--color-ink-soft); font-family: var(--font-ui);">ネットワーク名 (SSID)</span>
+            <code style="background: var(--color-surface); padding: 4px var(--space-3); border-radius: var(--radius-sm); font-size: var(--text-sm); border: 1px solid var(--color-border); color: var(--color-ink);">TokyoTower201</code>
+          </div>
+          <div style="height:1px; background: var(--color-border);"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: var(--text-sm); color: var(--color-ink-soft); font-family: var(--font-ui);">パスワード</span>
+            <code style="background: var(--color-surface); padding: 4px var(--space-3); border-radius: var(--radius-sm); font-size: var(--text-sm); border: 1px solid var(--color-border); color: var(--color-primary); font-weight: 500; letter-spacing: 0.05em;">tt201-wifi-2025</code>
+          </div>
+        </div>
+      </div>
+      <h3>接続できない場合</h3>
+      <ul>
+        <li>ルーターの電源ランプが青点灯していることを確認</li>
+        <li>一度WiFiをオフにしてから再度接続を試みてください</li>
+        <li>パスワードは大文字・小文字を区別します</li>
+        <li>それでも繋がらない場合はオーナーへご連絡ください</li>
+      </ul>
+    `
+  },
+  'area-1': {
+    cat: 'area', catLabel: '周辺情報', catIcon: '🗺️',
+    title: '近くのコンビニ・スーパー',
+    updated: '2025年1月20日',
+    prev: null,
+    next: { id: 'area-2', title: '最寄り駅・交通手段' },
+    html: `
+      <h3>コンビニエンスストア</h3>
+      <div style="display: flex; flex-direction: column; gap: var(--space-3); margin-bottom: var(--space-6);">
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-4); align-items: center;">
+          <div style="font-size: 28px;">🏪</div>
+          <div>
+            <div style="font-family: var(--font-display); font-size: var(--text-base); font-weight: 600; color: var(--color-ink);">セブンイレブン 芝公園店</div>
+            <div style="font-size: var(--text-sm); color: var(--color-ink-soft);">徒歩 約2分 (130m) ／ 24時間営業</div>
+          </div>
+        </div>
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-4); align-items: center;">
+          <div style="font-size: 28px;">🏪</div>
+          <div>
+            <div style="font-family: var(--font-display); font-size: var(--text-base); font-weight: 600; color: var(--color-ink);">ファミリーマート 芝2丁目店</div>
+            <div style="font-size: var(--text-sm); color: var(--color-ink-soft);">徒歩 約5分 (350m) ／ 24時間営業</div>
+          </div>
+        </div>
+      </div>
+      <h3>スーパーマーケット</h3>
+      <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-4); align-items: center;">
+        <div style="font-size: 28px;">🛒</div>
+        <div>
+          <div style="font-family: var(--font-display); font-size: var(--text-base); font-weight: 600; color: var(--color-ink);">いなげや 浜松町店</div>
+          <div style="font-size: var(--text-sm); color: var(--color-ink-soft);">徒歩 約8分 (600m) ／ 10:00〜22:00</div>
+        </div>
+      </div>
+      <div class="wb-info-box" style="margin-top: var(--space-5);">
+        <div class="wb-info-box-icon">💡</div>
+        <div class="wb-info-box-text">近くのセブンイレブンでは<strong>ATM</strong>もご利用いただけます（24時間対応）。</div>
+      </div>
+    `
+  },
+  'rules-1': {
+    cat: 'rules', catLabel: 'ハウスルール', catIcon: '📋',
+    title: '基本的なルール',
+    updated: '2025年2月4日',
+    prev: null,
+    next: { id: 'rules-2', title: '騒音について' },
+    html: `
+      <p>快適なご滞在と近隣住民の方々への配慮のため、以下のルールをお守りください。</p>
+      <h3>禁止事項</h3>
+      <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+        <div style="display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-3) var(--space-4); background: var(--color-danger-light); border-radius: var(--radius-md);">
+          <span style="font-size: 16px; flex-shrink: 0;">🚭</span>
+          <div style="font-size: var(--text-sm); color: var(--color-danger);">室内・共用部での<strong>喫煙禁止</strong>（ベランダも含む）</div>
+        </div>
+        <div style="display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-3) var(--space-4); background: var(--color-danger-light); border-radius: var(--radius-md);">
+          <span style="font-size: 16px; flex-shrink: 0;">🐾</span>
+          <div style="font-size: var(--text-sm); color: var(--color-danger);"><strong>ペット同伴禁止</strong></div>
+        </div>
+        <div style="display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-3) var(--space-4); background: var(--color-danger-light); border-radius: var(--radius-md);">
+          <span style="font-size: 16px; flex-shrink: 0;">🎉</span>
+          <div style="font-size: var(--text-sm); color: var(--color-danger;">予約人数を超える<strong>集会・パーティー禁止</strong></div>
+        </div>
+      </div>
+      <h3>お願い事項</h3>
+      <ul>
+        <li>22時〜8時は静粛にお過ごしください</li>
+        <li>ゴミは所定の方法で分別してください</li>
+        <li>水回りを清潔にお使いください</li>
+        <li>退室時は施錠を確認してください</li>
+      </ul>
+      <div class="wb-info-box">
+        <div class="wb-info-box-icon">💬</div>
+        <div class="wb-info-box-text">ご不明な点がございましたら、遠慮なくオーナーまでお問い合わせください。</div>
+      </div>
+    `
+  },
+  'emergency-1': {
+    cat: 'emergency', catLabel: '緊急連絡先', catIcon: '🚨',
+    title: '緊急連絡先一覧',
+    updated: '2025年2月4日',
+    prev: null,
+    next: { id: 'emergency-2', title: 'よくあるトラブル対応' },
+    html: `
+      <div class="wb-warning-box">
+        <div class="wb-info-box-icon">🚨</div>
+        <div class="wb-info-box-text"><strong>生命の危険がある場合は直ちに119番（救急・消防）または110番（警察）にご連絡ください。</strong></div>
+      </div>
+      <h3>オーナー連絡先</h3>
+      <div style="background: var(--color-surface); border: 1.5px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-5) var(--space-6); margin-bottom: var(--space-5);">
+        <div style="display: flex; gap: var(--space-4); align-items: center;">
+          <div style="width: 52px; height: 52px; background: var(--color-primary-tint); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0;">👤</div>
+          <div>
+            <div style="font-family: var(--font-display); font-size: var(--text-md); font-weight: 600; color: var(--color-ink);">田中 オーナー</div>
+            <div style="font-size: var(--text-sm); color: var(--color-ink-soft);">日本語・英語対応可</div>
+          </div>
+        </div>
+        <div style="margin-top: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2);">
+          <a href="tel:090-0000-0000" style="display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); background: var(--color-primary); color: white; border-radius: var(--radius-md); font-family: var(--font-ui); font-size: var(--text-sm); font-weight: 500; transition: background var(--duration-fast);">
+            <span>📞</span> 090-0000-0000（24時間対応）
+          </a>
+        </div>
+      </div>
+      <h3>緊急機関</h3>
+      <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-4); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+          <div style="display: flex; gap: var(--space-3); align-items: center;"><span>🚒</span> <span style="font-size: var(--text-sm); font-weight: 500;">救急・消防</span></div>
+          <code style="font-size: var(--text-lg); font-weight: 700; color: var(--color-danger);">119</code>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-4); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+          <div style="display: flex; gap: var(--space-3); align-items: center;"><span>🚔</span> <span style="font-size: var(--text-sm); font-weight: 500;">警察</span></div>
+          <code style="font-size: var(--text-lg); font-weight: 700; color: var(--color-primary);">110</code>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-4); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+          <div style="display: flex; gap: var(--space-3); align-items: center;"><span>🏥</span> <span style="font-size: var(--text-sm); font-weight: 500;">救急相談（東京）</span></div>
+          <code style="font-size: var(--text-lg); font-weight: 700; color: var(--color-success);">#7119</code>
+        </div>
+      </div>
+    `
+  },
+  'emergency-2': {
+    cat: 'emergency', catLabel: '緊急連絡先', catIcon: '🚨',
+    title: 'よくあるトラブル対応',
+    updated: '2025年2月4日',
+    prev: { id: 'emergency-1', title: '緊急連絡先一覧' },
+    next: null,
+    html: `
+      <h3>鍵を閉め出された場合</h3>
+      <p>オーナーに連絡してください。予備の鍵を手配します（深夜も対応可）。</p>
+      <div class="wb-info-box">
+        <div class="wb-info-box-icon">🔑</div>
+        <div class="wb-info-box-text">スペアキーの手配には30分〜1時間かかる場合があります。</div>
+      </div>
+      <h3>水漏れ・排水トラブル</h3>
+      <p>まず元栓を閉めて、オーナーへご連絡ください。元栓はキッチン下にあります。</p>
+      <h3>停電した場合</h3>
+      <ul>
+        <li>ブレーカーの確認（玄関横の配電盤）</li>
+        <li>全てのブレーカーが上がっていることを確認</li>
+        <li>それでも復旧しない場合はオーナーへ連絡</li>
+      </ul>
+      <div class="wb-warning-box">
+        <div class="wb-info-box-icon">⚠️</div>
+        <div class="wb-info-box-text">緊急度の高いトラブルは、いつでも24時間オーナーへご連絡ください。</div>
+      </div>
+    `
+  }
+};
+
+// Default content for unimplemented pages
+function getDefaultContent(id, cat) {
+  return `<p style="color: var(--color-ink-soft); font-size: var(--text-sm); font-style: italic;">このページのコンテンツはサンプルのため省略されています。</p>`;
+}
+
+function showHome() {
+  document.getElementById('home-view').style.display = 'block';
+  document.getElementById('manual-detail').style.display = 'none';
+
+  // Breadcrumb
+  const bc = document.getElementById('breadcrumb');
+  bc.innerHTML = `<span style="color: var(--color-ink-soft);">ホーム</span>`;
+
+  // Sidebar active state
+  document.querySelectorAll('.sidebar-cat-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.sidebar-manual-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('home-nav-btn').style.color = 'var(--color-primary)';
+
+  closeSidebar();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showManual(id, cat) {
+  const data = MANUALS[id];
+  const homeView = document.getElementById('home-view');
+  const detailView = document.getElementById('manual-detail');
+
+  homeView.style.display = 'none';
+  detailView.style.display = 'block';
+
+  const tagClass = `tag-${cat}`;
+  const catLabel = data ? data.catLabel : cat;
+  const catIcon = data ? data.catIcon : '📄';
+  const title = data ? data.title : id;
+  const html = data ? data.html : getDefaultContent(id, cat);
+  const updated = data ? data.updated : '';
+
+  // Pager
+  let pagerHTML = '<div class="wb-pager">';
+  if (data && data.prev) {
+    pagerHTML += `<a class="wb-pager-btn prev" onclick="showManual('${data.prev.id}','${cat}'); return false;" href="#"><div class="wb-pager-dir">← 前の記事</div><div class="wb-pager-title">${data.prev.title}</div></a>`;
+  } else {
+    pagerHTML += `<div></div>`;
+  }
+  if (data && data.next) {
+    pagerHTML += `<a class="wb-pager-btn next" onclick="showManual('${data.next.id}','${cat}'); return false;" href="#"><div class="wb-pager-dir">次の記事 →</div><div class="wb-pager-title">${data.next.title}</div></a>`;
+  } else {
+    pagerHTML += `<div></div>`;
+  }
+  pagerHTML += '</div>';
+
+  document.getElementById('manual-content').innerHTML = `
+    <div class="view">
+      <div class="manual-header">
+        <span class="manual-cat-tag ${tagClass}">${catIcon} ${catLabel}</span>
+        <h1 class="manual-title">${title}</h1>
+        ${updated ? `<div class="manual-meta"><span class="meta-chip">🕐 更新: ${updated}</span></div>` : ''}
+      </div>
+      <div class="manual-body">${html}</div>
+      ${pagerHTML}
+    </div>
+  `;
+
+  // Update breadcrumb
+  document.getElementById('breadcrumb').innerHTML = `
+    <a class="wb-bc-link" onclick="showHome(); return false;" href="#">ホーム</a>
+    <span class="wb-bc-sep">›</span>
+    <span>${catLabel}</span>
+    <span class="wb-bc-sep">›</span>
+    <span>${title}</span>
+  `;
+
+  // Update sidebar active states
+  document.querySelectorAll('.sidebar-cat-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.sidebar-manual-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('home-nav-btn').style.color = '';
+
+  const groupId = `group-${cat}`;
+  const group = document.getElementById(groupId);
+  if (group) {
+    group.classList.add('open');
+    group.querySelector('.sidebar-cat-btn').classList.add('active');
+  }
+
+  // Find and activate manual link
+  document.querySelectorAll('.sidebar-manual-link').forEach(link => {
+    if (link.getAttribute('onclick') && link.getAttribute('onclick').includes(`'${id}'`)) {
+      link.classList.add('active');
+    }
+  });
+
+  closeSidebar();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleGroup(id) {
+  const group = document.getElementById(id);
+  if (!group) return;
+  group.classList.toggle('open');
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('visible');
+}
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('visible');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('visible');
+}
+
+function setActiveTab(id) {
+  document.querySelectorAll('.wb-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// Initial state
+showManual('checkin-1', 'checkin');
+</script>
+</body>
+</html>

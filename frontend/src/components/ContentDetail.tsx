@@ -12,17 +12,28 @@ interface ContentDetailProps {
 
 export default function ContentDetail({ content }: ContentDetailProps) {
   return (
-    <article className="max-w-4xl mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">{content.title}</h1>
+    <article>
+      {/* マニュアルヘッダー */}
+      <div className="manual-header">
+        {content.category && (
+          <div className="manual-cat-tag">
+            {content.category.icon && <span>{content.category.icon}</span>}
+            {content.category.name}
+          </div>
+        )}
+        <h1 className="manual-title">{content.title}</h1>
+      </div>
 
+      {/* 画像ギャラリー */}
       {content.images && content.images.length > 0 && (
-        <div className="mb-6">
+        <div className="manual-gallery">
           <ImageGallery images={content.images} />
         </div>
       )}
 
+      {/* 本文 */}
       <div
-        className="prose prose-gray max-w-none"
+        className="manual-body"
         dangerouslySetInnerHTML={{ __html: formatRichText(content.body) }}
       />
     </article>
@@ -30,24 +41,22 @@ export default function ContentDetail({ content }: ContentDetailProps) {
 }
 
 /**
- * リッチテキストをHTMLに変換
- * Strapiのマークダウンを基本的なHTMLに変換
+ * Strapi のマークダウンを HTML に変換
  */
 function formatRichText(text: string): string {
   return text
-    // 見出し
-    .replace(/^### (.+)$/gm, '<h3 class="text-lg font-semibold mt-4 mb-2">$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2 class="text-xl font-semibold mt-6 mb-3">$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1 class="text-2xl font-bold mt-6 mb-4">$1</h1>')
-    // 太字・斜体
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    // リンク
-    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">$1</a>')
-    // リスト
-    .replace(/^- (.+)$/gm, '<li class="ml-4">$1</li>')
-    .replace(/(<li[^>]*>.*<\/li>\n?)+/g, '<ul class="list-disc list-inside my-2">$&</ul>')
-    // 段落
-    .replace(/\n\n/g, '</p><p class="my-4">')
-    .replace(/\n/g, '<br />');
+    .replace(
+      /\[(.+?)\]\((.+?)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+    )
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br />')
+    .replace(/^(.+)$/, '<p>$1</p>');
 }

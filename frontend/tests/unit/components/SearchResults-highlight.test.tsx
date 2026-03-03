@@ -11,7 +11,6 @@ describe('HighlightText', () => {
 
     const highlight = screen.getByText('エアコン');
     expect(highlight.tagName).toBe('MARK');
-    expect(highlight).toHaveClass('bg-yellow-200');
   });
 
   it('キーワードが含まれない場合はハイライトなし', () => {

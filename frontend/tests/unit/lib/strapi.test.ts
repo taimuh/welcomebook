@@ -25,17 +25,41 @@ const mockProperty = {
   updatedAt: '2024-01-01T00:00:00.000Z',
 };
 
-const mockCategories = [
+const mockCategory = {
+  id: 1,
+  documentId: 'cat-1',
+  name: '設備の使い方',
+  description: '家電や設備の操作方法',
+  icon: '🏠',
+  order: 1,
+  createdAt: '2024-01-01T00:00:00.000Z',
+  updatedAt: '2024-01-01T00:00:00.000Z',
+};
+
+// getCategoriesByProperty はコンテンツ経由でカテゴリを導出するため、
+// モックはカテゴリ付きコンテンツのリストを返す
+const mockContentsWithCategory = [
   {
     id: 1,
-    documentId: 'cat-1',
-    name: '設備の使い方',
-    description: '家電や設備の操作方法',
-    icon: '🏠',
+    documentId: 'content-1',
+    title: 'エアコンの使い方',
+    body: '本文1',
     order: 1,
+    published: true,
+    category: mockCategory,
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z',
-    contents: [{ id: 1 }, { id: 2 }],
+  },
+  {
+    id: 2,
+    documentId: 'content-2',
+    title: 'Wi-Fiの接続',
+    body: '本文2',
+    order: 2,
+    published: true,
+    category: mockCategory,
+    createdAt: '2024-01-01T00:00:00.000Z',
+    updatedAt: '2024-01-01T00:00:00.000Z',
   },
 ];
 
@@ -79,18 +103,19 @@ describe('Strapi APIクライアント', () => {
 
   describe('getCategoriesByProperty', () => {
     it('物件のカテゴリ一覧を取得できる', async () => {
+      // コンテンツ経由でカテゴリを導出するため、コンテンツのモックを返す
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
-          data: mockCategories,
-          meta: { pagination: { page: 1, pageSize: 25, pageCount: 1, total: 1 } },
+          data: mockContentsWithCategory,
+          meta: { pagination: { page: 1, pageSize: 100, pageCount: 1, total: 2 } },
         }),
       });
 
-      const categories = await getCategoriesByProperty('test-property');
+      const categories = await getCategoriesByProperty('prop-1');
 
       expect(categories).toHaveLength(1);
-      expect(categories[0].name).toBe(mockCategories[0].name);
+      expect(categories[0].name).toBe(mockCategory.name);
       expect(categories[0].contentCount).toBe(2);
     });
 
@@ -99,11 +124,11 @@ describe('Strapi APIクライアント', () => {
         ok: true,
         json: async () => ({
           data: [],
-          meta: { pagination: { page: 1, pageSize: 25, pageCount: 0, total: 0 } },
+          meta: { pagination: { page: 1, pageSize: 100, pageCount: 0, total: 0 } },
         }),
       });
 
-      const categories = await getCategoriesByProperty('non-existent');
+      const categories = await getCategoriesByProperty('non-existent-doc-id');
 
       expect(categories).toHaveLength(0);
     });

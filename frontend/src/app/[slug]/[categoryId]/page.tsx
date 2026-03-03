@@ -1,6 +1,6 @@
 /**
  * カテゴリページ (T033)
- * ContentList
+ * WbShell layout に内包される
  */
 
 import { notFound } from 'next/navigation';
@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { getPropertyBySlug, getContentsByCategory, getCategoriesByProperty } from '@/lib/strapi';
 import ContentList from '@/components/ContentList';
 
-export const revalidate = 30; // ISR: 30秒 (T036)
+export const revalidate = 30;
 
 interface CategoryPageProps {
   params: Promise<{ slug: string; categoryId: string }>;
@@ -19,63 +19,44 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const property = await getPropertyBySlug(slug);
   if (!property) {
-    notFound(); // T035: エラーハンドリング
+    notFound();
   }
 
-  // カテゴリ情報を取得
-  const categories = await getCategoriesByProperty(slug);
+  const categories = await getCategoriesByProperty(property.documentId);
   const category = categories.find((c) => c.documentId === categoryId);
-
   if (!category) {
-    notFound(); // T035: エラーハンドリング
+    notFound();
   }
 
   const contents = await getContentsByCategory(categoryId);
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      {/* 戻るリンク */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <Link
-            href={`/${slug}`}
-            className="inline-flex items-center text-blue-600 hover:text-blue-800"
-          >
-            <svg
-              className="w-5 h-5 mr-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            {property.name}
-          </Link>
-        </div>
+    <>
+      {/* パンくずリスト */}
+      <div className="wb-breadcrumb">
+        <Link href={`/${slug}`} className="wb-bc-link">{property.name}</Link>
+        <span className="wb-bc-sep">/</span>
+        <span>{category.name}</span>
       </div>
 
-      {/* カテゴリヘッダー */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          <div className="flex items-center">
-            {category.icon && <span className="text-3xl mr-3">{category.icon}</span>}
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">{category.name}</h1>
-              {category.description && (
-                <p className="text-gray-500 mt-1">{category.description}</p>
-              )}
-            </div>
+      <div className="wb-content anim-fadeup">
+        {/* カテゴリヘッダー */}
+        <div className="cat-page-header">
+          {category.icon && (
+            <div className="cat-page-icon">{category.icon}</div>
+          )}
+          <div>
+            <h1 className="cat-page-title">{category.name}</h1>
+            {category.description && (
+              <p className="cat-page-desc">{category.description}</p>
+            )}
           </div>
         </div>
-      </div>
 
-      <ContentList contents={contents} propertySlug={slug} />
-    </main>
+        {/* コンテンツ一覧 */}
+        <ContentList contents={contents} propertySlug={slug} />
+      </div>
+    </>
   );
 }
 
@@ -83,16 +64,11 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   const { slug, categoryId } = await params;
 
   const property = await getPropertyBySlug(slug);
-  if (!property) {
-    return { title: 'ページが見つかりません - WelcomeBook' };
-  }
+  if (!property) return { title: 'ページが見つかりません - WelcomeBook' };
 
-  const categories = await getCategoriesByProperty(slug);
+  const categories = await getCategoriesByProperty(property.documentId);
   const category = categories.find((c) => c.documentId === categoryId);
-
-  if (!category) {
-    return { title: 'ページが見つかりません - WelcomeBook' };
-  }
+  if (!category) return { title: 'ページが見つかりません - WelcomeBook' };
 
   return {
     title: `${category.name} - ${property.name} - WelcomeBook`,

@@ -17,22 +17,18 @@ export default function Error({ error, reset }: ErrorProps) {
   }, [error]);
 
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-center px-4">
-        <div className="text-6xl mb-4">😵</div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">エラーが発生しました</h1>
-        <p className="text-gray-500 mb-6">
+    <div className="wb-content wb-error-center">
+      <div className="wb-page-card">
+        <div className="wb-page-emoji">😵</div>
+        <h1 className="wb-page-title">エラーが発生しました</h1>
+        <p className="wb-page-desc">
           ページの読み込み中に問題が発生しました。
-          <br />
           しばらくしてからもう一度お試しください。
         </p>
-        <button
-          onClick={reset}
-          className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-        >
+        <button onClick={reset} className="wb-btn-primary">
           もう一度試す
         </button>
       </div>
-    </main>
+    </div>
   );
 }

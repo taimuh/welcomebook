@@ -1,13 +1,14 @@
 /**
- * 物件トップページ (T032, T066, T067)
- * PropertyHeader + CategoryList + 検索機能
+ * 物件ホームページ (T032)
+ * WbShell layout に内包される — ナビ・サイドバーは layout.tsx が担う
  */
 
 import { notFound } from 'next/navigation';
 import { getPropertyBySlug, getCategoriesByProperty } from '@/lib/strapi';
-import PropertyPageClient from '@/components/PropertyPageClient';
+import PropertyHeader from '@/components/PropertyHeader';
+import CategoryList from '@/components/CategoryList';
 
-export const revalidate = 30; // ISR: 30秒 (T036)
+export const revalidate = 30;
 
 interface PropertyPageProps {
   params: Promise<{ slug: string }>;
@@ -17,14 +18,21 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
   const { slug } = await params;
 
   const property = await getPropertyBySlug(slug);
-
   if (!property) {
-    notFound(); // T035: エラーハンドリング
+    notFound();
   }
 
-  const categories = await getCategoriesByProperty(slug);
+  const categories = await getCategoriesByProperty(property.documentId);
+  const visibleCategories = categories.filter(
+    (cat) => cat.contentCount !== undefined && cat.contentCount > 0
+  );
 
-  return <PropertyPageClient property={property} categories={categories} />;
+  return (
+    <div className="wb-content anim-fadeup">
+      <PropertyHeader property={property} />
+      <CategoryList categories={visibleCategories} propertySlug={slug} />
+    </div>
+  );
 }
 
 export async function generateMetadata({ params }: PropertyPageProps) {
@@ -32,9 +40,7 @@ export async function generateMetadata({ params }: PropertyPageProps) {
   const property = await getPropertyBySlug(slug);
 
   if (!property) {
-    return {
-      title: 'ページが見つかりません - WelcomeBook',
-    };
+    return { title: 'ページが見つかりません - WelcomeBook' };
   }
 
   return {
