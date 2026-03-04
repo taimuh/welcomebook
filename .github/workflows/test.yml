@@ -60,8 +60,6 @@ jobs:
       - name: Run E2E tests
         working-directory: frontend
         run: npm run test:e2e -- --project=chromium
-        env:
-          NEXT_PUBLIC_STRAPI_URL: http://localhost:1337
 
       - name: Upload coverage
         uses: actions/upload-artifact@v4

@@ -5,7 +5,7 @@
 
 import { createServer } from 'node:http';
 
-const PORT = 1337;
+const PORT = parseInt(process.env.MOCK_PORT || '1338');
 
 // --- モックデータ ---
 

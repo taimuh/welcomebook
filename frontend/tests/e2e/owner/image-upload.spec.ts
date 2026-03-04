@@ -8,7 +8,7 @@ import { test, expect } from '@playwright/test';
 test.describe('オーナーが画像を管理する', () => {
   test('シナリオ1: コンテンツに画像をアップロードできる', async ({ page }) => {
     // Strapi管理画面で画像アップロード
-    await page.goto('http://localhost:1337/admin');
+    await page.goto('http://localhost:1338/admin');
     await expect(page.locator('body')).toBeVisible();
   });
 
@@ -19,7 +19,7 @@ test.describe('オーナーが画像を管理する', () => {
   });
 
   test('シナリオ3: Strapi管理画面のメディアライブラリにアクセスできる', async ({ page }) => {
-    await page.goto('http://localhost:1337/admin');
+    await page.goto('http://localhost:1338/admin');
     await expect(page.locator('body')).toBeVisible();
   });
 

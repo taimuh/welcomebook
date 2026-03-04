@@ -8,7 +8,7 @@ import { test, expect } from '@playwright/test';
 test.describe('オーナーが物件を管理する', () => {
   test('シナリオ1: 物件情報を登録できる', async ({ page }) => {
     // Strapi管理画面で物件作成ページにアクセス
-    await page.goto('http://localhost:1337/admin');
+    await page.goto('http://localhost:1338/admin');
 
     // 管理画面が表示されることを確認
     await expect(page.locator('body')).toBeVisible();

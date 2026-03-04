@@ -8,7 +8,7 @@ import { test, expect } from '@playwright/test';
 test.describe('オーナーがカテゴリを管理する', () => {
   test('シナリオ1: カテゴリ情報を設定できる', async ({ page }) => {
     // Strapi管理画面でカテゴリ作成
-    await page.goto('http://localhost:1337/admin');
+    await page.goto('http://localhost:1338/admin');
     await expect(page.locator('body')).toBeVisible();
   });
 
@@ -18,9 +18,9 @@ test.describe('オーナーがカテゴリを管理する', () => {
     // カテゴリが表示される場合、order順で並んでいることを確認
     const body = await page.locator('body').textContent();
 
-    if (body && body.includes('カテゴリ')) {
+    if (body && body.includes('マニュアル一覧')) {
       // カテゴリセクションが存在することを確認
-      await expect(page.getByText('カテゴリ')).toBeVisible();
+      await expect(page.getByText('マニュアル一覧')).toBeVisible();
     }
   });
 
@@ -28,7 +28,7 @@ test.describe('オーナーがカテゴリを管理する', () => {
     // コンテンツが紐付くカテゴリの削除APIを呼ぶ
     // isOwnerポリシーにより認証なしでは拒否される
     const response = await request.delete(
-      'http://localhost:1337/api/categories/non-existent-id'
+      'http://localhost:1338/api/categories/non-existent-id'
     );
 
     // 認証エラーが返される
@@ -37,7 +37,7 @@ test.describe('オーナーがカテゴリを管理する', () => {
 
   test('シナリオ4: コンテンツなしカテゴリの削除は可能', async ({ page }) => {
     // Strapi管理画面で確認
-    await page.goto('http://localhost:1337/admin');
+    await page.goto('http://localhost:1338/admin');
     await expect(page.locator('body')).toBeVisible();
   });
 });

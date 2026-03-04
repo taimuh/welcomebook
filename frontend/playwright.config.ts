@@ -1,5 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// E2Eテスト用の分離ポート（開発中のStrapiと競合しないよう別ポートを使用）
+const MOCK_PORT = 1338;
+const E2E_PORT = 3001;
+
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
@@ -8,7 +12,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: `http://localhost:${E2E_PORT}`,
     trace: 'on-first-retry',
   },
   projects: [
@@ -24,15 +28,19 @@ export default defineConfig({
   webServer: [
     {
       command: 'node tests/e2e/mock-strapi-server.mjs',
-      url: 'http://localhost:1337',
+      url: `http://localhost:${MOCK_PORT}`,
       reuseExistingServer: !process.env.CI,
       timeout: 10000,
+      env: { MOCK_PORT: String(MOCK_PORT) },
     },
     {
-      command: 'npm run dev',
-      url: 'http://localhost:3000',
+      command: `npm run dev -- -p ${E2E_PORT}`,
+      url: `http://localhost:${E2E_PORT}`,
       reuseExistingServer: !process.env.CI,
       timeout: 120000,
+      env: {
+        NEXT_PUBLIC_STRAPI_URL: `http://localhost:${MOCK_PORT}`,
+      },
     },
   ],
 });
