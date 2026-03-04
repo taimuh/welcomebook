@@ -15,13 +15,13 @@ test.describe('ゲストがマニュアルを閲覧する', () => {
     // 物件名が表示される
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 
-    // カテゴリ一覧が表示される
-    await expect(page.getByText('カテゴリ')).toBeVisible();
+    // カテゴリ一覧が表示される（CategoryListのセクションタイトル）
+    await expect(page.getByText('マニュアル一覧')).toBeVisible();
   });
 
   test('シナリオ2: カテゴリを選択してコンテンツ一覧が表示される', async ({ page }) => {
-    // カテゴリをクリック
-    const categoryLink = page.getByRole('link').filter({ hasText: /設備|ハウスルール|周辺情報|緊急/ }).first();
+    // カテゴリカードをクリック（メインコンテンツ領域のcat-cardリンク）
+    const categoryLink = page.locator('.cat-card').first();
     await categoryLink.click();
 
     // カテゴリページに遷移
@@ -32,15 +32,15 @@ test.describe('ゲストがマニュアルを閲覧する', () => {
   });
 
   test('シナリオ3: コンテンツを選択して詳細が表示される', async ({ page }) => {
-    // カテゴリをクリック
-    const categoryLink = page.getByRole('link').filter({ hasText: /設備|ハウスルール|周辺情報|緊急/ }).first();
+    // カテゴリカードをクリック（メインコンテンツ領域のcat-cardリンク）
+    const categoryLink = page.locator('.cat-card').first();
     await categoryLink.click();
 
     // カテゴリページへの遷移を待つ
     await page.waitForURL(/\/test-property\/cat-/);
 
-    // コンテンツがあれば、最初のコンテンツをクリック
-    const contentLink = page.getByRole('link').filter({ hasNotText: /テスト物件|設備|ハウスルール|周辺情報|緊急/ }).first();
+    // コンテンツリンクをクリック（content-list-itemクラスのリンク）
+    const contentLink = page.locator('.content-list-item').first();
     const contentVisible = await contentLink.isVisible().catch(() => false);
 
     if (contentVisible) {
@@ -67,8 +67,8 @@ test.describe('ゲストがマニュアルを閲覧する', () => {
   });
 
   test('シナリオ5: 3タップ以内でコンテンツに到達できる', async ({ page }) => {
-    // タップ1: カテゴリをクリック
-    const categoryLink = page.getByRole('link').filter({ hasText: /設備|ハウスルール|周辺情報|緊急/ }).first();
+    // タップ1: カテゴリカードをクリック（メインコンテンツ領域のcat-cardリンク）
+    const categoryLink = page.locator('.cat-card').first();
     const categoryVisible = await categoryLink.isVisible().catch(() => false);
 
     if (categoryVisible) {
@@ -77,8 +77,8 @@ test.describe('ゲストがマニュアルを閲覧する', () => {
       // カテゴリページへの遷移を待つ
       await page.waitForURL(/\/test-property\/cat-/);
 
-      // タップ2: コンテンツをクリック
-      const contentLink = page.getByRole('link').filter({ hasNotText: /テスト物件|設備|ハウスルール|周辺情報|緊急/ }).first();
+      // タップ2: コンテンツをクリック（content-list-itemクラスのリンク）
+      const contentLink = page.locator('.content-list-item').first();
       const contentVisible = await contentLink.isVisible().catch(() => false);
 
       if (contentVisible) {

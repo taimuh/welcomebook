@@ -14,7 +14,7 @@ test.describe('物件アクセス制御', () => {
 
   test('認証なしではAPIの書き込みが拒否される', async ({ request }) => {
     // 認証なしでPropertyの作成を試みる
-    const response = await request.post('http://localhost:1337/api/listings', {
+    const response = await request.post('http://localhost:1338/api/listings', {
       data: {
         data: {
           name: '不正な物件',
@@ -30,7 +30,7 @@ test.describe('物件アクセス制御', () => {
   test('認証なしではAPIの更新が拒否される', async ({ request }) => {
     // 認証なしでPropertyの更新を試みる
     const response = await request.put(
-      'http://localhost:1337/api/listings/non-existent-id',
+      'http://localhost:1338/api/listings/non-existent-id',
       {
         data: {
           data: {
@@ -47,7 +47,7 @@ test.describe('物件アクセス制御', () => {
   test('認証なしではAPIの削除が拒否される', async ({ request }) => {
     // 認証なしでPropertyの削除を試みる
     const response = await request.delete(
-      'http://localhost:1337/api/listings/non-existent-id'
+      'http://localhost:1338/api/listings/non-existent-id'
     );
 
     // 401 Unauthorizedまたは403 Forbiddenが返される

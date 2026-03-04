@@ -65,8 +65,8 @@ describe('searchContents', () => {
     const calledUrl = mockFetch.mock.calls[0][0];
     expect(calledUrl).toContain('filters[$or][0][title][$containsi]');
     expect(calledUrl).toContain('filters[$or][1][body][$containsi]');
-    expect(calledUrl).toContain('filters[venue][slug][$eq]=test-property');
     expect(calledUrl).toContain('filters[published][$eq]=true');
+    expect(calledUrl).toContain('filters[venue][documentId][$eq]');
   });
 
   it('検索結果にサマリーが含まれる', async () => {
@@ -98,7 +98,7 @@ describe('searchContents', () => {
     expect(results).toHaveLength(0);
   });
 
-  it('物件スラッグでフィルタされる', async () => {
+  it('カテゴリ情報がpopulateされる', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({
@@ -110,6 +110,6 @@ describe('searchContents', () => {
     await searchContents('my-property', 'test');
 
     const calledUrl = mockFetch.mock.calls[0][0];
-    expect(calledUrl).toContain('filters[venue][slug][$eq]=my-property');
+    expect(calledUrl).toContain('populate[0]=category');
   });
 });

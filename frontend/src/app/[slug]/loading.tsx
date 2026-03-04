@@ -1,28 +1,29 @@
 /**
  * 物件ページ ローディング状態 (T090)
+ * WbShell は既にレンダリング済みのため、コンテンツエリアのスケルトンのみ表示
  */
 
 export default function Loading() {
   return (
-    <main className="min-h-screen bg-gray-50">
+    <div className="wb-content">
       {/* ヘッダースケルトン */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 py-6 animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-48 mb-4" />
-          <div className="h-24 bg-gray-200 rounded mb-4" />
-          <div className="h-4 bg-gray-200 rounded w-32" />
-        </div>
-      </header>
-
-      {/* カテゴリリストスケルトン */}
-      <div className="max-w-4xl mx-auto px-4 py-6 animate-pulse">
-        <div className="h-6 bg-gray-200 rounded w-24 mb-4" />
-        <div className="space-y-3">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-20 bg-gray-200 rounded-lg" />
-          ))}
-        </div>
+      <div style={{ marginBottom: '32px', paddingBottom: '24px', borderBottom: '1px solid var(--color-border)' }}>
+        <div className="wb-skeleton" style={{ height: '11px', width: '80px', marginBottom: '12px' }} />
+        <div className="wb-skeleton" style={{ height: '32px', width: '240px', marginBottom: '16px' }} />
+        <div className="wb-skeleton" style={{ height: '3px', width: '40px', marginBottom: '16px' }} />
+        <div className="wb-skeleton" style={{ height: '80px', borderRadius: '12px' }} />
       </div>
-    </main>
+
+      {/* カテゴリグリッドスケルトン */}
+      <div className="cats-grid">
+        {[1, 2, 3, 4].map((i) => (
+          <div
+            key={i}
+            className="wb-skeleton"
+            style={{ height: '140px', borderRadius: '20px' }}
+          />
+        ))}
+      </div>
+    </div>
   );
 }

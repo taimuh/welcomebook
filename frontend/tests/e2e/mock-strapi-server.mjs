@@ -5,7 +5,7 @@
 
 import { createServer } from 'node:http';
 
-const PORT = 1337;
+const PORT = parseInt(process.env.MOCK_PORT || '1338');
 
 // --- モックデータ ---
 
@@ -179,31 +179,20 @@ function handleCategories(req, res, url) {
     }, 403);
   }
 
-  const propertySlug = getQueryParam(url, 'filters[venue][slug][$eq]');
-  if (propertySlug === 'test-property') {
-    return jsonResponse(res, {
-      data: mockCategories,
-      meta: { ...meta, pagination: { ...meta.pagination, total: mockCategories.length } },
-    });
-  }
-
   return jsonResponse(res, { data: [], meta });
 }
 
 function handleContents(req, res, url) {
   const pathname = new URL(url, 'http://localhost').pathname;
 
-  // 個別コンテンツ: /api/contents/:documentId
-  const singleMatch = pathname.match(/^\/api\/contents\/([^/]+)$/);
-  if (singleMatch) {
-    const documentId = decodeURIComponent(singleMatch[1]);
-    const content = mockContents.find((c) => c.documentId === documentId);
-    if (content) {
-      return jsonResponse(res, { data: content, meta: {} });
-    }
+  // documentId指定: filters[documentId][$eq] (getContentByIdで使用)
+  const contentDocId = getQueryParam(url, 'filters[documentId][$eq]');
+  if (contentDocId) {
+    const content = mockContents.find((c) => c.documentId === contentDocId);
     return jsonResponse(res, {
-      error: { status: 404, name: 'NotFoundError', message: 'Not found' },
-    }, 404);
+      data: content ? [content] : [],
+      meta: { ...meta, pagination: { ...meta.pagination, total: content ? 1 : 0 } },
+    });
   }
 
   // 検索: $containsi パラメータが存在する場合
@@ -231,6 +220,16 @@ function handleContents(req, res, url) {
     const results = mockContents.filter(
       (c) => c.published && c.category && c.category.documentId === categoryDocId
     );
+    return jsonResponse(res, {
+      data: results,
+      meta: { ...meta, pagination: { ...meta.pagination, total: results.length } },
+    });
+  }
+
+  // 物件別: filters[venue][documentId][$eq] (getCategoriesByProperty で使用)
+  const venueDocId = getQueryParam(url, 'filters[venue][documentId][$eq]');
+  if (venueDocId === 'prop-1') {
+    const results = mockContents.filter((c) => c.published);
     return jsonResponse(res, {
       data: results,
       meta: { ...meta, pagination: { ...meta.pagination, total: results.length } },

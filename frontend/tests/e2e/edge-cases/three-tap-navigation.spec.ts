@@ -11,11 +11,8 @@ test.describe('SC-001: 3タップ以内でコンテンツに到達', () => {
     await page.goto('/test-property');
     await expect(page.locator('body')).toBeVisible();
 
-    // タップ1: カテゴリを選択
-    const categoryLink = page
-      .getByRole('link')
-      .filter({ hasText: /設備|ハウスルール|周辺情報|緊急/ })
-      .first();
+    // タップ1: カテゴリカードをクリック（メインコンテンツ領域のcat-cardリンク）
+    const categoryLink = page.locator('.cat-card').first();
     const categoryVisible = await categoryLink.isVisible().catch(() => false);
 
     if (categoryVisible) {
@@ -24,11 +21,8 @@ test.describe('SC-001: 3タップ以内でコンテンツに到達', () => {
       // カテゴリページに遷移
       await expect(page).toHaveURL(/\/test-property\/[a-z0-9-]+/);
 
-      // タップ2: コンテンツを選択
-      const contentLink = page
-        .getByRole('link')
-        .filter({ hasNotText: /テスト物件|カテゴリ/ })
-        .first();
+      // タップ2: コンテンツをクリック（content-list-itemクラスのリンク）
+      const contentLink = page.locator('.content-list-item').first();
       const contentVisible = await contentLink.isVisible().catch(() => false);
 
       if (contentVisible) {

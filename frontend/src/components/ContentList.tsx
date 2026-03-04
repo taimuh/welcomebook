@@ -1,6 +1,6 @@
 /**
  * ContentList コンポーネント (T030)
- * コンテンツ一覧を表示（タイトル、サマリー100文字）
+ * コンテンツ一覧を表示（タイトル、サマリー）
  */
 
 import Link from 'next/link';
@@ -14,29 +14,41 @@ interface ContentListProps {
 export default function ContentList({ contents, propertySlug }: ContentListProps) {
   if (contents.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-500">コンテンツがありません</p>
+      <div className="content-list-empty">
+        コンテンツがありません
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6">
-      <ul className="space-y-3">
-        {contents.map((content) => (
-          <li key={content.documentId}>
-            <Link
-              href={`/${propertySlug}/content/${content.documentId}`}
-              className="block p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-colors"
-            >
-              <h3 className="font-medium text-gray-900 mb-1">{content.title}</h3>
+    <ul className="content-list">
+      {contents.map((content) => (
+        <li key={content.documentId}>
+          <Link
+            href={`/${propertySlug}/content/${content.documentId}`}
+            className="content-list-item"
+          >
+            <div className="content-list-body">
+              <div className="content-list-title">{content.title}</div>
               {content.summary && (
-                <p className="text-sm text-gray-500 line-clamp-2">{content.summary}</p>
+                <p className="content-list-summary">{content.summary}</p>
               )}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+            </div>
+            <svg
+              className="content-list-arrow"
+              width="18" height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }

@@ -1,12 +1,5 @@
 import type { Metadata } from 'next';
-import { Noto_Sans_JP } from 'next/font/google';
 import './globals.css';
-
-const notoSansJP = Noto_Sans_JP({
-  subsets: ['latin'],
-  variable: '--font-noto-sans-jp',
-  weight: ['400', '500', '700'],
-});
 
 export const metadata: Metadata = {
   title: 'WelcomeBook - ゲストマニュアル',
@@ -20,9 +13,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${notoSansJP.variable} font-sans antialiased`}>
-        {children}
-      </body>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&family=Noto+Sans+JP:wght@300;400;500&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body>{children}</body>
     </html>
   );
 }

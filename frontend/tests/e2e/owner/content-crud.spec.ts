@@ -8,7 +8,7 @@ import { test, expect } from '@playwright/test';
 test.describe('オーナーがコンテンツを管理する', () => {
   test('シナリオ1: コンテンツ作成フォームにアクセスできる', async ({ page }) => {
     // Strapi管理画面のコンテンツ作成ページにアクセス
-    await page.goto('http://localhost:1337/admin');
+    await page.goto('http://localhost:1338/admin');
 
     // ログインが必要な場合はログイン
     const loginForm = page.getByRole('textbox', { name: /email/i });
@@ -59,7 +59,7 @@ test.describe('オーナーがコンテンツを管理する', () => {
 
   test('シナリオ6: リッチテキストエディタで書式設定ができる', async ({ page }) => {
     // Strapi管理画面のエディタがリッチテキスト対応であることを確認
-    await page.goto('http://localhost:1337/admin');
+    await page.goto('http://localhost:1338/admin');
     await expect(page.locator('body')).toBeVisible();
   });
 });
