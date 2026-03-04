@@ -33,6 +33,20 @@ describe('PropertyHeader', () => {
     ).toBeInTheDocument();
   });
 
+  it('ウェルカムメッセージのハイライト記法を表示する', () => {
+    const property = { ...mockProperty, welcomeMessage: '==重要なお知らせ==' };
+    const { container } = render(<PropertyHeader property={property} />);
+    expect(container.querySelector('mark')).toBeInTheDocument();
+    expect(screen.getByText('重要なお知らせ')).toBeInTheDocument();
+  });
+
+  it('ウェルカムメッセージの文字色記法を表示する', () => {
+    const property = { ...mockProperty, welcomeMessage: '{red:警告}' };
+    const { container } = render(<PropertyHeader property={property} />);
+    expect(container.querySelector('.text-red')).toBeInTheDocument();
+    expect(screen.getByText('警告')).toBeInTheDocument();
+  });
+
   it('緊急連絡先を表示する', () => {
     render(<PropertyHeader property={mockProperty} />);
 

@@ -4,6 +4,7 @@
  */
 
 import type { Property } from '@/lib/types';
+import { renderMarkdown } from '@/lib/renderMarkdown';
 
 interface PropertyHeaderProps {
   property: Property;
@@ -19,7 +20,10 @@ export default function PropertyHeader({ property }: PropertyHeaderProps) {
       </div>
 
       {property.welcomeMessage && (
-        <p className="home-subtitle">{property.welcomeMessage}</p>
+        <div
+          className="home-subtitle"
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(property.welcomeMessage) }}
+        />
       )}
 
       {property.address && (
