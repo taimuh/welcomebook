@@ -10,8 +10,8 @@ const customJestConfig = {
   testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
-    '^marked$': '<rootDir>/node_modules/marked/lib/marked.umd.js',
   },
+  transformIgnorePatterns: ['/node_modules/(?!(marked)/)'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/tests/e2e/'],
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',

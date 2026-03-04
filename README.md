@@ -2,7 +2,7 @@
 
 民泊ゲストマニュアルシステム — 物件ごとのチェックイン案内・設備説明・周辺情報をゲストに提供する Web アプリケーション。
 
-![welcomebook_image](/assets/welcomebook_image.png)
+![welcomebook_image](assets/welcomebook_image.png)
 
 ## 技術スタック
 
