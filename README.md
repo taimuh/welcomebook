@@ -2,21 +2,23 @@
 
 民泊ゲストマニュアルシステム — 物件ごとのチェックイン案内・設備説明・周辺情報をゲストに提供する Web アプリケーション。
 
+![welcomebook_image](assets/welcomebook_image.png)
+
 ## 技術スタック
 
 | レイヤー | 技術 | バージョン |
 |---------|------|-----------|
 | フロントエンド | Next.js (App Router) | 14+ |
 | 言語 | TypeScript | 5+ |
-| スタイリング | Tailwind CSS | 3.4+ |
+| スタイリング | カスタム CSS（Tailwind CSS 経由） | 3.4+ |
 | CMS | Strapi | 5.x |
 | DB | PostgreSQL（本番） / SQLite（開発） | 14+ |
 | ランタイム | Node.js | 20+ |
 | テスト（ユニット） | Jest + React Testing Library | - |
 | テスト（E2E） | Playwright | - |
 | CI | GitHub Actions | - |
-| ホスティング（FE） | Vercel | 無料枠 |
-| ホスティング（BE） | Railway | 無料枠 |
+| ホスティング（FE） | Vercel | - |
+| ホスティング（BE） | Railway | - |
 
 ## ディレクトリ構成
 
@@ -30,13 +32,12 @@ welcomebook/
 │   ├── src/
 │   │   ├── app/             # App Router ページ
 │   │   ├── components/      # UI コンポーネント
-│   │   ├── lib/             # ユーティリティ・API クライアント
-│   │   └── styles/          # グローバルスタイル
+│   │   └── lib/             # ユーティリティ・API クライアント
 │   └── tests/
 │       ├── unit/            # フロントエンドユニットテスト
 │       └── e2e/             # Playwright E2E テスト
-├── specs/                   # 機能仕様書
-│   └── 001-guest-manual/    # ゲストマニュアル機能仕様
+├── assets/                  # 画像・静的リソース
+├── specs/                   # 機能仕様書（仕様駆動開発）
 └── .github/workflows/       # CI ワークフロー
 ```
 
@@ -52,42 +53,6 @@ welcomebook/
 ```bash
 cd backend
 npm ci
-```
-
-`.env` を作成（開発用）:
-
-```env
-HOST=0.0.0.0
-PORT=1337
-
-# 以下はランダムな値を設定
-APP_KEYS=key1,key2,key3,key4
-API_TOKEN_SALT=random-salt
-ADMIN_JWT_SECRET=random-secret
-TRANSFER_TOKEN_SALT=random-salt
-JWT_SECRET=random-secret
-ENCRYPTION_KEY=random-key
-
-# 開発では SQLite を使用
-DATABASE_CLIENT=sqlite
-DATABASE_FILENAME=.tmp/data.db
-```
-
-本番環境で PostgreSQL を使用する場合は `.env` に以下を設定:
-
-```env
-DATABASE_CLIENT=postgres
-DATABASE_HOST=localhost
-DATABASE_PORT=5432
-DATABASE_NAME=welcomebook
-DATABASE_USERNAME=your-username
-DATABASE_PASSWORD=your-password
-DATABASE_SSL=false
-```
-
-Strapi を起動:
-
-```bash
 npm run develop
 ```
 
@@ -98,18 +63,6 @@ npm run develop
 ```bash
 cd frontend
 npm ci
-```
-
-`.env.local` を作成:
-
-```env
-NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
-STRAPI_API_TOKEN=your-api-token-here
-```
-
-開発サーバーを起動:
-
-```bash
 npm run dev
 ```
 
@@ -187,8 +140,8 @@ npm run test:e2e
 │ slug        │───────│ description │───────│ body        │
 │ address     │       │ icon        │       │ images      │
 │ description │       │ order       │       │ order       │
-│ welcomeMsg  │       └─────────────┘       │ published   │
-│ emergency   │                             └─────────────┘
+│ welcomeMessage │    └─────────────┘       │ published   │
+│ emergencyContact │                        └─────────────┘
 │ owner       │
 └─────────────┘
   Listing 1 ──* Category 1 ──* Content
@@ -209,16 +162,7 @@ npm run test:e2e
 
 ## 仕様書
 
-`specs/` ディレクトリに機能仕様書を格納:
-
-```text
-specs/001-guest-manual/
-├── spec.md              # 機能仕様書（要件・画面定義・API定義）
-├── tasks.md             # タスク一覧（T001〜T101）
-└── checklist.md         # 実装チェックリスト
-```
-
-新機能は `specs/NNN-feature-name/` ディレクトリに仕様書を作成してから実装する（仕様駆動開発）。
+`specs/` ディレクトリに機能仕様書を格納。新機能は `specs/NNN-feature-name/` ディレクトリに仕様書を作成してから実装する（仕様駆動開発）。
 
 ## デプロイ
 

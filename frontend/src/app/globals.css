@@ -741,6 +741,37 @@ a.wb-address:hover {
 .manual-body a { color: var(--color-primary); }
 .manual-body a:hover { text-decoration: underline; }
 
+/* テーブル */
+.manual-body table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; }
+.manual-body th, .manual-body td { border: 1px solid var(--color-border); padding: 8px 12px; text-align: left; }
+.manual-body th { background: var(--color-surface); font-weight: 500; color: var(--color-ink); }
+.manual-body thead:has(th:empty) { display: none; }
+.manual-body tr:nth-child(even) td { background: var(--color-bg); }
+
+/* 画像横並び */
+.manual-body .img-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.manual-body .img-row img {
+  flex: 1;
+  min-width: 120px;
+  height: auto;
+}
+
+/* ハイライト（renderMarkdown 共通） */
+.manual-body mark,
+.home-subtitle mark { background: #fef08a; color: inherit; border-radius: 2px; padding: 0 2px; }
+
+/* 文字色（renderMarkdown 共通） */
+.text-red    { color: #dc2626; }
+.text-blue   { color: #2563eb; }
+.text-green  { color: #16a34a; }
+.text-orange { color: #ea580c; }
+
 /* ============================================
    SEARCH RESULTS
    ============================================ */
